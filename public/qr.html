@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>아이엠픽 QR 접속</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #FFF7E8 0%, #F8FBFF 50%, #EEF6FF 100%);
+      font-family: 'Noto Sans KR', sans-serif;
+      color: #333;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 32px;
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+      max-width: 480px;
+      width: 100%;
+    }
+    .emoji { font-size: 3rem; margin-bottom: 12px; }
+    h1 {
+      font-family: 'Jua', sans-serif;
+      font-size: 2.2rem;
+      color: #FF8A9A;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-family: 'Jua', sans-serif;
+      color: #7DB7FF;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .desc {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    #qrcode {
+      display: inline-block;
+      padding: 16px;
+      background: #fff;
+      border: 4px solid #8EDBC5;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    #qrcode canvas, #qrcode img { display: block; }
+    .url {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #333;
+      background: #FFF7E8;
+      padding: 12px 20px;
+      border-radius: 12px;
+      word-break: break-all;
+      margin-bottom: 16px;
+    }
+    .tip {
+      font-size: 0.9rem;
+      color: #888;
+      line-height: 1.7;
+    }
+    .tip strong { color: #FF8A9A; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="emoji">📱✨</div>
+    <h1>아이엠픽 AI'M PICK</h1>
+    <p class="subtitle">데이터로 고르는 나의 미래</p>
+    <p class="desc">아래 QR코드를 스캔하면<br>진로탐험 프로그램에 바로 접속할 수 있어요!</p>
+    <div id="qrcode"></div>
+    <p class="url" id="app-url"></p>
+    <p class="tip">
+      <strong>발표 시연 팁</strong><br>
+      휴대폰과 PC가 <strong>같은 Wi-Fi</strong>에 연결되어 있어야 해요.<br>
+      접속이 안 되면 아래 주소를 직접 입력해 보세요.
+    </p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script>
+    const url = window.location.origin.replace(/\/qr\.html$/, '') || 'http://172.30.1.22:5173';
+    document.getElementById('app-url').textContent = url;
+    QRCode.toCanvas(document.createElement('canvas'), url, {
+      width: 280,
+      margin: 2,
+      color: { dark: '#333333', light: '#ffffff' }
+    }, function (err, canvas) {
+      if (!err) document.getElementById('qrcode').appendChild(canvas);
+    });
+  </script>
+</body>
+</html>
