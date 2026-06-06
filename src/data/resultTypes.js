@@ -93,12 +93,12 @@ export const resultTypes = {
   QP: {
     code: 'QP',
     name: '질문박사·꼼꼼플래너형',
-    shortName: '데이터 분석가형',
+    shortName: '자료 정리 탐구형',
     description: '자료를 분석하고 체계화하는 학생',
     jobs: ['데이터분석가', '통계연구원', '정보보안전문가', '기상연구원'],
-    hero: '유순지',
-    heroDescription: '유순지는 하늘과 시간을 연구하며 과학 지식을 정리한 조선시대 학자예요.',
-    message: '너는 유순지처럼 자료를 살피고 차근차근 분석하는 힘이 있어!',
+    hero: '김부식',
+    heroDescription: '김부식은 역사 자료를 모으고 정리하여 『삼국사기』를 편찬한 고려 시대의 학자예요.',
+    message: '너는 김부식처럼 자료를 차근차근 살피고, 중요한 내용을 정리하는 힘이 있어!',
     video: '/videos/QP.mp4',
   },
   AH: {

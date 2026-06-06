@@ -139,63 +139,123 @@ body {
   gap: 16px;
 }
 
-.mascot-area {
-  width: 140px;
-  height: 140px;
-  margin-bottom: 8px;
-}
-
-.mascot-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.mascot-fallback {
-  width: 140px;
-  height: 140px;
-  background: linear-gradient(135deg, var(--blue), var(--mint));
-  border-radius: 50%;
+/* 로고 + 위인 이미지 영역 */
+.hero-logo-area {
+  position: relative;
+  width: min(92vw, 760px);
+  min-height: 340px;
+  margin: 0 auto 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow);
-  animation: bounce 2s ease infinite;
 }
 
-.mascot-emoji {
-  font-size: 4rem;
+.main-logo-card {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 34px 38px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.start-title {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.start-title__ko {
+.main-logo-card h1 {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: 2.8rem;
-  color: var(--pink);
-  letter-spacing: -1px;
+  font-size: clamp(42px, 8vw, 76px);
+  font-weight: 900;
+  color: #333;
 }
 
-.start-title__en {
+.english-logo {
+  margin: 6px 0 0;
   font-family: var(--font-display);
-  font-size: 1.4rem;
-  color: var(--blue);
-  letter-spacing: 2px;
+  font-size: clamp(20px, 4vw, 34px);
+  font-weight: 800;
+  color: #ff8a9a;
+  letter-spacing: 1px;
 }
 
-.start-subtitle {
+.logo-subtitle {
+  margin-top: 10px;
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  color: var(--text-light);
+  font-size: clamp(16px, 3vw, 22px);
+  font-weight: 700;
+  color: #555;
+}
+
+.creator-badge {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 247, 232, 0.95);
+  color: #555;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 209, 102, 0.5);
+}
+
+.floating-hero {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 24px;
+  z-index: 1;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.14));
+  animation: floatHero 3.4s ease-in-out infinite;
+  background: white;
+  padding: 4px;
+}
+
+.hero-1 {
+  top: 4px;
+  left: 60px;
+}
+
+.hero-2 {
+  top: 18px;
+  right: 64px;
+  animation-delay: 0.4s;
+}
+
+.hero-3 {
+  bottom: 26px;
+  left: 80px;
+  animation-delay: 0.8s;
+}
+
+.hero-4 {
+  bottom: 18px;
+  right: 86px;
+  animation-delay: 1.2s;
+}
+
+.hero-5 {
+  top: 48%;
+  left: 0;
+  animation-delay: 1.6s;
+}
+
+.hero-6 {
+  top: 48%;
+  right: 0;
+  animation-delay: 2s;
+}
+
+@keyframes floatHero {
+  0%, 100% {
+    translate: 0 0;
+    rotate: -2deg;
+  }
+  50% {
+    translate: 0 -10px;
+    rotate: 2deg;
+  }
 }
 
 .start-desc {
@@ -860,10 +920,57 @@ body {
 }
 
 /* ---- 반응형 ---- */
-@media (max-width: 480px) {
-  .start-title__ko {
-    font-size: 2.2rem;
+@media (max-width: 640px) {
+  .hero-logo-area {
+    min-height: 300px;
+    width: 96vw;
   }
+
+  .main-logo-card {
+    padding: 28px 22px;
+    border-radius: 28px;
+  }
+
+  .floating-hero {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+  }
+
+  .hero-1 {
+    top: 6px;
+    left: 20px;
+  }
+
+  .hero-2 {
+    top: 8px;
+    right: 22px;
+  }
+
+  .hero-3 {
+    bottom: 14px;
+    left: 32px;
+  }
+
+  .hero-4 {
+    bottom: 14px;
+    right: 32px;
+  }
+
+  .hero-5,
+  .hero-6 {
+    display: none;
+  }
+
+  .creator-badge {
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 7px 12px;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
 
   .question-text {
     font-size: 1.2rem;
