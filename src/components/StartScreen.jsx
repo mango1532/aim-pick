@@ -4,32 +4,43 @@ import { RESULT_CODES } from '../data/resultTypes'
 /** 발표 시연용 데모 모드 (true로 설정 시 하단 테스트 버튼 표시) */
 export const DEMO_MODE = true
 
-/** 첫 화면 로고 주변 배치용 위인 이미지 (public/images, .png) */
+/** 첫 화면 위인 이미지 15명 (public/images, .png) */
 const heroImages = [
-  '/images/장영실.png',
-  '/images/허준.png',
-  '/images/주시경.png',
-  '/images/김부식.png',
-  '/images/이순신.png',
-  '/images/심사임당.png',
+  { name: '김구', src: '/images/김구.png' },
+  { name: '김부식', src: '/images/김부식.png' },
+  { name: '김정호', src: '/images/김정호.png' },
+  { name: '김정희', src: '/images/김정희.png' },
+  { name: '나운규', src: '/images/나운규.png' },
+  { name: '백남준', src: '/images/백남준.png' },
+  { name: '심사임당', src: '/images/심사임당.png' },
+  { name: '왕건', src: '/images/왕건.png' },
+  { name: '윤동주', src: '/images/윤동주.png' },
+  { name: '이순신', src: '/images/이순신.png' },
+  { name: '장영실', src: '/images/장영실.png' },
+  { name: '정도전', src: '/images/정도전.png' },
+  { name: '주시경', src: '/images/주시경.png' },
+  { name: '허준', src: '/images/허준.png' },
+  { name: '황희', src: '/images/황희.png' },
 ]
 
 export default function StartScreen({ onStart, onDemoRandom, onDemoType }) {
   return (
     <div className="screen start-screen">
       <div className="start-screen__content">
-        <div className="hero-logo-area">
-          {heroImages.map((src, index) => (
-            <img
-              key={src}
-              className={`floating-hero hero-${index + 1}`}
-              src={src}
-              alt="귀여운 위인 캐릭터"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none'
-              }}
-            />
-          ))}
+        <div className="hero-stage">
+          <div className="hero-orbit" aria-hidden="true">
+            {heroImages.map((hero, index) => (
+              <img
+                key={hero.name}
+                className={`hero-avatar hero-avatar-${index + 1}`}
+                src={hero.src}
+                alt=""
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+            ))}
+          </div>
 
           <div className="main-logo-card">
             <h1>아이엠픽</h1>

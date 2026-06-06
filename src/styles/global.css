@@ -130,6 +130,10 @@ body {
   justify-content: center;
   text-align: center;
   position: relative;
+  max-width: 1000px;
+  min-height: 100vh;
+  padding: 36px 18px 48px;
+  overflow-x: hidden;
 }
 
 .start-screen__content {
@@ -137,27 +141,36 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  width: 100%;
 }
 
-/* 로고 + 위인 이미지 영역 */
-.hero-logo-area {
+/* 위인 15명 + 로고 스테이지 */
+.hero-stage {
   position: relative;
-  width: min(92vw, 760px);
-  min-height: 340px;
-  margin: 0 auto 24px;
+  width: min(94vw, 980px);
+  min-height: 520px;
+  margin: 0 auto 28px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.hero-orbit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
 .main-logo-card {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  width: min(86vw, 460px);
   text-align: center;
-  padding: 34px 38px;
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  padding: 38px 40px;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
 }
 
@@ -199,62 +212,41 @@ body {
   border: 1px solid rgba(255, 209, 102, 0.5);
 }
 
-.floating-hero {
+.hero-avatar {
   position: absolute;
-  width: 88px;
-  height: 88px;
+  width: 76px;
+  height: 76px;
   object-fit: cover;
-  border-radius: 24px;
-  z-index: 1;
-  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.14));
-  animation: floatHero 3.4s ease-in-out infinite;
-  background: white;
+  border-radius: 22px;
+  background: #ffffff;
   padding: 4px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+  animation: heroFloat 3.8s ease-in-out infinite;
 }
 
-.hero-1 {
-  top: 4px;
-  left: 60px;
-}
+/* 15명 타원형 배치 — 로고 카드 바깥쪽 링 */
+.hero-avatar-1  { top: 0%;    left: calc(50% - 38px); animation-delay: 0s; }
+.hero-avatar-2  { top: 5%;    left: 12%;  animation-delay: 0.2s; }
+.hero-avatar-3  { top: 5%;    right: 12%; animation-delay: 0.4s; }
+.hero-avatar-4  { top: 18%;   left: 1%;   animation-delay: 0.6s; }
+.hero-avatar-5  { top: 18%;   right: 1%;  animation-delay: 0.8s; }
+.hero-avatar-6  { top: 40%;   left: 0%;   animation-delay: 1s; }
+.hero-avatar-7  { top: 40%;   right: 0%;  animation-delay: 1.2s; }
+.hero-avatar-8  { bottom: 22%; left: 1%;  animation-delay: 1.4s; }
+.hero-avatar-9  { bottom: 22%; right: 1%; animation-delay: 1.6s; }
+.hero-avatar-10 { bottom: 6%;  left: 12%; animation-delay: 1.8s; }
+.hero-avatar-11 { bottom: 6%;  right: 12%; animation-delay: 2s; }
+.hero-avatar-12 { bottom: 0%;  left: calc(50% - 38px); animation-delay: 2.2s; }
+.hero-avatar-13 { top: 2%;    left: 2%;   animation-delay: 2.4s; }
+.hero-avatar-14 { top: 2%;    right: 2%;  animation-delay: 2.6s; }
+.hero-avatar-15 { bottom: 2%;  left: calc(50% + 10px); animation-delay: 2.8s; }
 
-.hero-2 {
-  top: 18px;
-  right: 64px;
-  animation-delay: 0.4s;
-}
-
-.hero-3 {
-  bottom: 26px;
-  left: 80px;
-  animation-delay: 0.8s;
-}
-
-.hero-4 {
-  bottom: 18px;
-  right: 86px;
-  animation-delay: 1.2s;
-}
-
-.hero-5 {
-  top: 48%;
-  left: 0;
-  animation-delay: 1.6s;
-}
-
-.hero-6 {
-  top: 48%;
-  right: 0;
-  animation-delay: 2s;
-}
-
-@keyframes floatHero {
+@keyframes heroFloat {
   0%, 100% {
-    translate: 0 0;
-    rotate: -2deg;
+    transform: translateY(0) rotate(-2deg);
   }
   50% {
-    translate: 0 -10px;
-    rotate: 2deg;
+    transform: translateY(-8px) rotate(2deg);
   }
 }
 
@@ -920,46 +912,60 @@ body {
 }
 
 /* ---- 반응형 ---- */
-@media (max-width: 640px) {
-  .hero-logo-area {
-    min-height: 300px;
-    width: 96vw;
+@media (max-width: 720px) {
+  .start-screen {
+    padding-top: 22px;
+    padding-bottom: 80px;
+  }
+
+  .hero-stage {
+    width: 100%;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .hero-orbit {
+    position: relative;
+    inset: auto;
+    z-index: 2;
+    width: min(94vw, 420px);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    justify-items: center;
+    order: 1;
+    pointer-events: none;
   }
 
   .main-logo-card {
-    padding: 28px 22px;
-    border-radius: 28px;
+    order: 2;
+    width: min(88vw, 420px);
+    padding: 30px 20px;
+    border-radius: 30px;
   }
 
-  .floating-hero {
-    width: 58px;
-    height: 58px;
-    border-radius: 18px;
+  .hero-avatar {
+    position: static;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    padding: 3px;
+    animation: heroFloatMobile 3.4s ease-in-out infinite;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
   }
 
-  .hero-1 {
-    top: 6px;
-    left: 20px;
+  .hero-avatar:nth-child(odd) {
+    animation-delay: 0.2s;
   }
 
-  .hero-2 {
-    top: 8px;
-    right: 22px;
-  }
-
-  .hero-3 {
-    bottom: 14px;
-    left: 32px;
-  }
-
-  .hero-4 {
-    bottom: 14px;
-    right: 32px;
-  }
-
-  .hero-5,
-  .hero-6 {
-    display: none;
+  .hero-avatar:nth-child(even) {
+    animation-delay: 0.6s;
   }
 
   .creator-badge {
@@ -967,6 +973,30 @@ body {
     line-height: 1.4;
     padding: 7px 12px;
     white-space: normal;
+  }
+
+  .demo-panel {
+    padding: 8px 12px 10px;
+  }
+
+  .demo-panel__title {
+    margin-bottom: 4px;
+    font-size: 0.7rem;
+  }
+
+  .demo-type-btn {
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    min-width: 28px;
+  }
+}
+
+@keyframes heroFloatMobile {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
   }
 }
 
