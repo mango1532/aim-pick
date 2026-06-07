@@ -416,22 +416,45 @@ body {
   border: 3px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
   font-family: var(--font-body);
   font-size: 1.1rem;
   text-align: left;
   box-shadow: var(--shadow);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.score-btn:hover {
+.score-btn:hover:not(.score-btn--selected) {
   border-color: var(--mint);
   transform: scale(1.01);
 }
 
 .score-btn--selected {
-  border-color: var(--pink);
-  background: #FFF0F2;
-  box-shadow: 0 4px 16px rgba(255, 138, 154, 0.25);
+  border-color: #8edbc5;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(142, 219, 197, 0.25);
+}
+
+.score-btn:focus {
+  outline: none;
+}
+
+.score-btn:active:not(.score-btn--selected) {
+  transform: scale(0.98);
+}
+
+.score-btn:focus-visible:not(.score-btn--selected) {
+  outline: 3px dashed #7db7ff;
+  outline-offset: 4px;
+}
+
+/* selected가 아닌 버튼에 focus/active 잔상이 선택처럼 보이지 않게 */
+.score-btn:not(.score-btn--selected):focus,
+.score-btn:not(.score-btn--selected):active {
+  border-color: transparent;
+  box-shadow: var(--shadow);
+  background: var(--white);
 }
 
 .score-btn__number {

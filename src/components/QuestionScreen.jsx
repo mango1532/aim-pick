@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ProgressBar from './ProgressBar'
 import CuteButton from './CuteButton'
 import { questions } from '../data/questions'
@@ -18,11 +18,18 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
 
   const currentQuestion = questions[currentIndex]
 
-  // 현재 문항의 저장된 답변만 선택 표시 (local state 사용 안 함)
+  // 현재 문항 ID 기준으로 answers에서만 선택값 계산 (local state 없음)
   const currentAnswer = answers.find(
     (answer) => answer.questionId === currentQuestion.id,
   )
-  const selectedScore = currentAnswer?.score ?? null
+  const selectedScore = currentAnswer ? currentAnswer.score : null
+
+  // 문항 변경 시 focus 잔상 제거
+  useEffect(() => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
+  }, [currentQuestion.id])
 
   const buildUpdatedAnswers = (score) => {
     const newAnswer = {
@@ -34,26 +41,25 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
     return [...filtered, newAnswer]
   }
 
-  const saveAnswer = (score) => {
-    onAnswer({
+  const handleSelect = (score, event) => {
+    event?.currentTarget?.blur()
+
+    const newAnswer = {
       questionId: currentQuestion.id,
       type: currentQuestion.type,
       score,
-    })
-    return buildUpdatedAnswers(score)
-  }
+    }
+    onAnswer(newAnswer)
 
-  const handleSelect = (score) => {
-    const updatedAnswers = saveAnswer(score)
+    const updatedAnswers = buildUpdatedAnswers(score)
 
-    // 선택 후 잠시 뒤 자동으로 다음 문항 이동
     setTimeout(() => {
       if (currentIndex < TOTAL - 1) {
         setCurrentIndex((prev) => prev + 1)
       } else {
         onFinish(updatedAnswers)
       }
-    }, 400)
+    }, 180)
   }
 
   const handleNext = () => {
@@ -77,26 +83,34 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
     <div className="screen question-screen">
       <ProgressBar current={currentIndex + 1} total={TOTAL} />
 
-      <div className="question-card">
+      <div className="question-card" key={`question-${currentQuestion.id}`}>
         <span className="question-number">질문 {currentQuestion.id}</span>
         <p className="question-text">{currentQuestion.text}</p>
       </div>
 
-      <div className="score-options" role="group" aria-label="응답 선택">
-        {SCORE_OPTIONS.map((opt) => (
-          <button
-            key={opt.score}
-            type="button"
-            className={`score-btn ${selectedScore === opt.score ? 'score-btn--selected' : ''}`}
-            onClick={() => handleSelect(opt.score)}
-            aria-pressed={selectedScore === opt.score}
-            aria-label={`${opt.score}점: ${opt.label}`}
-          >
-            <span className="score-btn__number">{opt.score}</span>
-            <span className="score-btn__emoji">{opt.emoji}</span>
-            <span className="score-btn__label">{opt.label}</span>
-          </button>
-        ))}
+      <div
+        className="score-options"
+        key={`options-${currentQuestion.id}`}
+        role="group"
+        aria-label="응답 선택"
+      >
+        {SCORE_OPTIONS.map((opt) => {
+          const isSelected = selectedScore === opt.score
+          return (
+            <button
+              key={`${currentQuestion.id}-${opt.score}`}
+              type="button"
+              className={`score-btn ${isSelected ? 'score-btn--selected' : ''}`}
+              onClick={(e) => handleSelect(opt.score, e)}
+              aria-pressed={isSelected}
+              aria-label={`${opt.score}점: ${opt.label}`}
+            >
+              <span className="score-btn__number">{opt.score}</span>
+              <span className="score-btn__emoji">{opt.emoji}</span>
+              <span className="score-btn__label">{opt.label}</span>
+            </button>
+          )
+        })}
       </div>
 
       <div className="question-nav">
