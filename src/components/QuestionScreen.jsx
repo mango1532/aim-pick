@@ -15,16 +15,14 @@ const TOTAL = questions.length
 
 export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [selectedScore, setSelectedScore] = useState(null)
 
   const currentQuestion = questions[currentIndex]
-  const existingAnswer = answers.find((a) => a.questionId === currentQuestion.id)
 
-  const goToQuestion = (index) => {
-    setCurrentIndex(index)
-    const prev = answers.find((a) => a.questionId === questions[index].id)
-    setSelectedScore(prev ? prev.score : null)
-  }
+  // 현재 문항의 저장된 답변만 선택 표시 (local state 사용 안 함)
+  const currentAnswer = answers.find(
+    (answer) => answer.questionId === currentQuestion.id,
+  )
+  const selectedScore = currentAnswer?.score ?? null
 
   const buildUpdatedAnswers = (score) => {
     const newAnswer = {
@@ -36,19 +34,22 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
     return [...filtered, newAnswer]
   }
 
-  const handleSelect = (score) => {
-    setSelectedScore(score)
-    const updatedAnswers = buildUpdatedAnswers(score)
+  const saveAnswer = (score) => {
     onAnswer({
       questionId: currentQuestion.id,
       type: currentQuestion.type,
       score,
     })
+    return buildUpdatedAnswers(score)
+  }
+
+  const handleSelect = (score) => {
+    const updatedAnswers = saveAnswer(score)
 
     // 선택 후 잠시 뒤 자동으로 다음 문항 이동
     setTimeout(() => {
       if (currentIndex < TOTAL - 1) {
-        goToQuestion(currentIndex + 1)
+        setCurrentIndex((prev) => prev + 1)
       } else {
         onFinish(updatedAnswers)
       }
@@ -56,23 +57,21 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
   }
 
   const handleNext = () => {
-    if (displayScore === null) return
+    if (selectedScore === null) return
     if (currentIndex < TOTAL - 1) {
-      goToQuestion(currentIndex + 1)
+      setCurrentIndex((prev) => prev + 1)
     } else {
-      onFinish(buildUpdatedAnswers(displayScore))
+      onFinish(buildUpdatedAnswers(selectedScore))
     }
   }
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      goToQuestion(currentIndex - 1)
+      setCurrentIndex((prev) => prev - 1)
     } else {
       onBack()
     }
   }
-
-  const displayScore = selectedScore ?? existingAnswer?.score ?? null
 
   return (
     <div className="screen question-screen">
@@ -88,9 +87,9 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
           <button
             key={opt.score}
             type="button"
-            className={`score-btn ${displayScore === opt.score ? 'score-btn--selected' : ''}`}
+            className={`score-btn ${selectedScore === opt.score ? 'score-btn--selected' : ''}`}
             onClick={() => handleSelect(opt.score)}
-            aria-pressed={displayScore === opt.score}
+            aria-pressed={selectedScore === opt.score}
             aria-label={`${opt.score}점: ${opt.label}`}
           >
             <span className="score-btn__number">{opt.score}</span>
@@ -104,14 +103,14 @@ export default function QuestionScreen({ answers, onAnswer, onFinish, onBack }) 
         <CuteButton onClick={handlePrev} variant="secondary" size="medium">
           ← 이전
         </CuteButton>
-        {displayScore !== null && currentIndex < TOTAL - 1 && (
+        {selectedScore !== null && currentIndex < TOTAL - 1 && (
           <CuteButton onClick={handleNext} variant="primary" size="medium">
             다음 →
           </CuteButton>
         )}
-        {displayScore !== null && currentIndex === TOTAL - 1 && (
+        {selectedScore !== null && currentIndex === TOTAL - 1 && (
           <CuteButton
-            onClick={() => onFinish(buildUpdatedAnswers(displayScore))}
+            onClick={() => onFinish(buildUpdatedAnswers(selectedScore))}
             variant="primary"
             size="medium"
           >
