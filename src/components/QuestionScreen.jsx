@@ -31,6 +31,7 @@ export default function QuestionScreen({
 }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [localAnswers, setLocalAnswers] = useState(answers)
+  const [isAdvancing, setIsAdvancing] = useState(false)
   const total = questions.length
 
   useEffect(() => {
@@ -42,26 +43,30 @@ export default function QuestionScreen({
     ? localAnswers.find((a) => a.questionId === currentQuestion.id)
     : null
   const selectedScore = currentAnswer ? currentAnswer.score : null
+  const selectedChoiceLabel = currentAnswer?.choiceLabel ?? null
 
   useEffect(() => {
     if (!currentQuestion) return
+    setIsAdvancing(false)
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
   }, [currentQuestion?.id])
 
-  const handleSelect = (score, event) => {
-    if (!currentQuestion) return
+  const handleSelect = (opt, event) => {
+    if (!currentQuestion || isAdvancing) return
     event?.currentTarget?.blur()
 
     const newAnswer = {
       questionId: currentQuestion.id,
       type: currentQuestion.type,
-      score,
+      score: opt.score,
+      choiceLabel: opt.label,
     }
     const updatedAnswers = mergeAnswer(localAnswers, newAnswer)
     setLocalAnswers(updatedAnswers)
     onAnswersChange(updatedAnswers)
+    setIsAdvancing(true)
 
     const isLastQuestion = currentIndex === total - 1
     setTimeout(() => {
@@ -70,7 +75,8 @@ export default function QuestionScreen({
       } else {
         setCurrentIndex((prev) => prev + 1)
       }
-    }, version === 'mini' ? 400 : 150)
+      setIsAdvancing(false)
+    }, version === 'mini' ? 350 : 150)
   }
 
   const handleNext = () => {
@@ -119,15 +125,21 @@ export default function QuestionScreen({
           )}
           <p className="mini-question-text">{currentQuestion.text}</p>
         </div>
-        <div className="mini-choice-grid" key={`mini-options-${currentQuestion.id}`} role="group" aria-label="응답 선택">
+        <div
+          className={`mini-choice-grid ${isAdvancing ? 'mini-choice-grid--locked' : ''}`}
+          key={`mini-options-${currentQuestion.id}`}
+          role="group"
+          aria-label="응답 선택"
+        >
           {currentQuestion.choices.map((opt) => {
-            const isSelected = selectedScore === opt.score
+            const isSelected = selectedChoiceLabel === opt.label
             return (
               <button
                 key={`${currentQuestion.id}-${opt.label}`}
                 type="button"
                 className={`mini-choice-card ${isSelected ? 'mini-choice-card--selected' : ''}`}
-                onClick={(e) => handleSelect(opt.score, e)}
+                onClick={(e) => handleSelect(opt, e)}
+                disabled={isAdvancing}
                 aria-pressed={isSelected}
                 aria-label={opt.label}
               >
@@ -160,7 +172,8 @@ export default function QuestionScreen({
               key={`${currentQuestion.id}-${opt.score}`}
               type="button"
               className={`score-btn ${isSelected ? 'score-btn--selected' : ''}`}
-              onClick={(e) => handleSelect(opt.score, e)}
+              onClick={(e) => handleSelect({ score: opt.score, label: String(opt.score) }, e)}
+              disabled={isAdvancing}
               aria-pressed={isSelected}
               aria-label={`${opt.score}점: ${opt.label}`}
             >
