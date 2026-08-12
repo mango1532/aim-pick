@@ -1,10 +1,8 @@
-import CuteButton from './CuteButton'
+import { VERSION_LIST } from '../data/versions'
 import { RESULT_CODES } from '../data/resultTypes'
 
-/** 발표 시연용 데모 모드 (true로 설정 시 하단 테스트 버튼 표시) */
 export const DEMO_MODE = true
 
-/** 첫 화면 위인 이미지 15명 (public/images, .png) */
 const heroImages = [
   { name: '김구', src: '/images/김구.png' },
   { name: '김부식', src: '/images/김부식.png' },
@@ -23,11 +21,11 @@ const heroImages = [
   { name: '황희', src: '/images/황희.png' },
 ]
 
-export default function StartScreen({ onStart, onDemoRandom, onDemoType }) {
+export default function StartScreen({ onSelectVersion, onDemoRandom, onDemoType }) {
   return (
-    <div className="screen start-screen">
+    <div className="screen start-screen start-screen--compact">
       <div className="start-screen__content">
-        <div className="hero-stage">
+        <div className="hero-stage hero-stage--compact">
           <div className="hero-orbit" aria-hidden="true">
             {heroImages.map((hero, index) => (
               <img
@@ -35,41 +33,44 @@ export default function StartScreen({ onStart, onDemoRandom, onDemoType }) {
                 className={`hero-avatar hero-avatar-${index + 1}`}
                 src={hero.src}
                 alt=""
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none'
-                }}
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
             ))}
           </div>
-
-          <div className="main-logo-card">
+          <div className="main-logo-card main-logo-card--compact">
             <h1>아이엠픽</h1>
             <p className="english-logo">AI&apos;M PICK</p>
             <p className="logo-subtitle">데이터로 고르는 나의 미래</p>
-            <div className="creator-badge">
-              {'호남지방데이터청 꿈길TEAM _ 김경보 & 장하림'}
-            </div>
           </div>
         </div>
 
-        <p className="start-desc">
-          48개의 쉬운 질문에 답하면
-          <br />
-          AI 친구가 나에게 어울리는
-          <br />
-          미래 직업과 위인을 찾아줘요!
+        <p className="start-tagline">✨ 나에게 맞는 진로탐색을 골라보세요! ✨</p>
+
+        <div className="version-cards">
+          {VERSION_LIST.map((v) => (
+            <button
+              key={v.id}
+              type="button"
+              className={`version-card version-card--${v.id}`}
+              onClick={() => onSelectVersion(v.id)}
+            >
+              <span className="version-card__emoji">{v.emoji}</span>
+              <span className="version-card__label">{v.label}</span>
+              <span className="version-card__title">{v.title}</span>
+              <span className="version-card__desc">{v.subtitle}</span>
+              <span className="version-card__meta">{v.count}문항 · {v.duration}</span>
+            </button>
+          ))}
+        </div>
+
+        <p className="creator-badge creator-badge--footer">
+          {'호남지방데이터청 꿈길TEAM _ 김경보 & 장하림'}
         </p>
-
-        <CuteButton onClick={onStart} variant="primary" ariaLabel="설문 시작하기">
-          ✨ 시작하기
-        </CuteButton>
-
-        <p className="start-footer">초등학생 진로탐험 프로그램</p>
       </div>
 
       {DEMO_MODE && (
         <div className="demo-panel">
-          <p className="demo-panel__title">🎬 발표 시연용</p>
+          <p className="demo-panel__title">🎬 발표 시연용 (TEEN 48문항)</p>
           <div className="demo-panel__buttons">
             <button type="button" className="demo-btn" onClick={onDemoRandom}>
               랜덤 응답 → 결과
