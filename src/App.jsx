@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import StartScreen from './components/StartScreen'
+import VersionIntroScreen from './components/VersionIntroScreen'
 import QuestionScreen from './components/QuestionScreen'
 import ResultScreen from './components/ResultScreen'
+import { getQuestionsByVersion } from './data/questionSets'
+import { VERSIONS } from './data/versions'
 import {
   calculateResult,
   validateAnswers,
@@ -10,50 +13,64 @@ import {
   createDemoScoresForCode,
 } from './utils/calculateResult'
 
-/** 화면 상태: start | question | result | error */
 const SCREENS = {
   START: 'start',
+  INTRO: 'intro',
   QUESTION: 'question',
   RESULT: 'result',
   ERROR: 'error',
 }
 
+function createEmptySurveyState() {
+  return { answers: [], result: null, errorMessage: '' }
+}
+
 export default function App() {
   const [screen, setScreen] = useState(SCREENS.START)
+  const [version, setVersion] = useState(null)
   const [answers, setAnswers] = useState([])
   const [result, setResult] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
+  const questionList = useMemo(
+    () => (version ? getQuestionsByVersion(version) : []),
+    [version],
+  )
+
+  const resetSurveyState = () => {
+    const empty = createEmptySurveyState()
+    setAnswers(empty.answers)
+    setResult(empty.result)
+    setErrorMessage(empty.errorMessage)
+  }
+
   const goToStart = () => {
     setScreen(SCREENS.START)
-    setAnswers([])
-    setResult(null)
-    setErrorMessage('')
+    setVersion(null)
+    resetSurveyState()
+  }
+
+  const handleSelectVersion = (versionId) => {
+    setVersion(versionId)
+    resetSurveyState()
+    setScreen(SCREENS.INTRO)
   }
 
   const goToQuestion = () => {
-    setAnswers([])
-    setResult(null)
-    setErrorMessage('')
+    resetSurveyState()
     setScreen(SCREENS.QUESTION)
   }
 
-  const handleAnswer = (answer) => {
-    setAnswers((prev) => {
-      const filtered = prev.filter((a) => a.questionId !== answer.questionId)
-      return [...filtered, answer]
-    })
-  }
-
-  const showResult = (answerList) => {
-    const validation = validateAnswers(answerList)
+  const showResult = (answerList, activeVersion = version) => {
+    const questions = getQuestionsByVersion(activeVersion)
+    const validation = validateAnswers(answerList, questions)
     if (!validation.valid) {
       setErrorMessage('아직 대답하지 않은 질문이 있어요!')
       setScreen(SCREENS.ERROR)
       return
     }
 
-    const calculated = calculateResult(answerList)
+    const calculated = calculateResult(answerList, questions)
     if (!calculated) {
       setErrorMessage('결과를 계산할 수 없어요. 다시 시도해 주세요.')
       setScreen(SCREENS.ERROR)
@@ -71,22 +88,24 @@ export default function App() {
     setScreen(SCREENS.RESULT)
   }
 
-  const handleFinish = (finalAnswers) => {
-    showResult(finalAnswers || answers)
+  const handleSurveyComplete = (finalAnswers) => {
+    setAnswers(finalAnswers)
+    showResult(finalAnswers, version)
   }
 
-  /** 시연용: 랜덤 응답 */
   const handleDemoRandom = () => {
-    const randomAnswers = generateRandomAnswers()
+    const teenQuestions = getQuestionsByVersion(VERSIONS.teen.id)
+    const randomAnswers = generateRandomAnswers(teenQuestions)
+    setVersion(VERSIONS.teen.id)
     setAnswers(randomAnswers)
-    showResult(randomAnswers)
+    showResult(randomAnswers, VERSIONS.teen.id)
   }
 
-  /** 시연용: 특정 유형 결과 */
   const handleDemoType = (code) => {
     const demoResult = createDemoScoresForCode(code)
     const data = getResultData(demoResult.resultCode)
     if (data) {
+      setVersion(VERSIONS.teen.id)
       setResult(demoResult)
       setScreen(SCREENS.RESULT)
     }
@@ -98,18 +117,29 @@ export default function App() {
     <div className="app">
       {screen === SCREENS.START && (
         <StartScreen
-          onStart={goToQuestion}
+          onSelectVersion={handleSelectVersion}
           onDemoRandom={handleDemoRandom}
           onDemoType={handleDemoType}
         />
       )}
 
-      {screen === SCREENS.QUESTION && (
-        <QuestionScreen
-          answers={answers}
-          onAnswer={handleAnswer}
-          onFinish={handleFinish}
+      {screen === SCREENS.INTRO && version && (
+        <VersionIntroScreen
+          versionId={version}
+          onStart={goToQuestion}
           onBack={goToStart}
+        />
+      )}
+
+      {screen === SCREENS.QUESTION && version && (
+        <QuestionScreen
+          key={`survey-${version}`}
+          questions={questionList}
+          version={version}
+          answers={answers}
+          onAnswersChange={setAnswers}
+          onComplete={handleSurveyComplete}
+          onBack={() => setScreen(SCREENS.INTRO)}
         />
       )}
 
@@ -117,6 +147,7 @@ export default function App() {
         <ResultScreen
           result={result}
           resultData={resultData}
+          version={version || VERSIONS.teen.id}
           onRestart={goToStart}
         />
       )}

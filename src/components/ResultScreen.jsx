@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import CuteButton from './CuteButton'
 import { BASE_TYPES, getVideoSrc } from '../data/resultTypes'
+import { MINI_JOB_LABELS, KIDS_JOB_COUNT, MINI_JOB_COUNT } from '../data/resultDisplay'
+import { VERSIONS } from '../data/versions'
 
 /** 결과 화면 영상 카드 - 자동재생(muted) + 소리 켜기 버튼 */
 function ResultVideoCard({ videoSrc, resultCode, heroName }) {
@@ -87,24 +89,17 @@ function ResultVideoCard({ videoSrc, resultCode, heroName }) {
 }
 
 /** 6개 유형 점수 막대그래프 */
-function ScoreChart({ scores }) {
-  const maxScore = 40
-
+function ScoreChart({ scores, maxScore = 40 }) {
   return (
     <div className="score-chart">
       {Object.entries(BASE_TYPES).map(([key, info]) => {
         const value = scores[key] || 0
-        const percent = (value / maxScore) * 100
+        const percent = maxScore > 0 ? (value / maxScore) * 100 : 0
         return (
           <div key={key} className="score-chart__row">
-            <span className="score-chart__label">
-              {info.emoji} {key}
-            </span>
+            <span className="score-chart__label">{info.emoji} {key}</span>
             <div className="score-chart__bar-track">
-              <div
-                className="score-chart__bar-fill"
-                style={{ width: `${percent}%`, backgroundColor: info.color }}
-              />
+              <div className="score-chart__bar-fill" style={{ width: `${percent}%`, backgroundColor: info.color }} />
             </div>
             <span className="score-chart__value">{value}점</span>
           </div>
@@ -114,7 +109,7 @@ function ScoreChart({ scores }) {
   )
 }
 
-export default function ResultScreen({ result, resultData, onRestart }) {
+export default function ResultScreen({ result, resultData, version = 'teen', onRestart }) {
   if (!result || !resultData) {
     return (
       <div className="screen result-screen result-screen--error">
@@ -133,7 +128,25 @@ export default function ResultScreen({ result, resultData, onRestart }) {
   const { scores, resultCode } = result
   const { name, shortName, description, jobs, hero, heroDescription, message } = resultData
 
-  // video 필드 우선, 없으면 /videos/{code}.mp4 fallback
+  const versionInfo = VERSIONS[version] || VERSIONS.teen
+  const maxScorePerType = version === 'mini' ? 10 : version === 'kids' ? 20 : 40
+  const displayJobs =
+    version === 'mini'
+      ? (MINI_JOB_LABELS[resultCode] || jobs.slice(0, MINI_JOB_COUNT))
+      : version === 'kids'
+        ? jobs.slice(0, KIDS_JOB_COUNT)
+        : jobs
+  const celebrationTitle = version === 'mini' ? '나는 이런 활동을 좋아해요!' : '결과가 나왔어요!'
+  const typeTitle =
+    version === 'mini' ? shortName
+      : version === 'kids' ? `나의 진로 유형은 ${shortName}!`
+        : name
+  const heroTitle = version === 'mini' ? `나와 닮은 위인은 ${hero}이에요!` : hero
+  const jobsSectionTitle =
+    version === 'mini' ? '🌟 나에게 어울리는 활동'
+      : version === 'kids' ? '💼 나와 잘 어울리는 직업'
+        : '💼 나에게 어울리는 직업'
+
   const videoSrc = getVideoSrc(resultData)
 
   // 개발 중 영상 경로 확인용 로그
@@ -145,7 +158,7 @@ export default function ResultScreen({ result, resultData, onRestart }) {
   }
 
   return (
-    <div className="screen result-screen">
+    <div className={`screen result-screen result-screen--${version}`}>
       {/* 인쇄용 전용 영역 */}
       <div className="print-only print-header">
         <h1>아이엠픽 (AI&apos;M PICK)</h1>
@@ -154,26 +167,29 @@ export default function ResultScreen({ result, resultData, onRestart }) {
 
       <div className="result-celebration">
         <span className="confetti">🎉</span>
-        <h2 className="result-celebration__title">결과가 나왔어요!</h2>
+        <h2 className="result-celebration__title">{celebrationTitle}</h2>
         <span className="confetti">✨</span>
       </div>
 
       <div className="result-hero-card">
         <div className="result-type-badge">{resultCode}</div>
-        <h3 className="result-type-name">{name}</h3>
-        <p className="result-short-name">{shortName}</p>
+        <h3 className="result-type-name">{typeTitle}</h3>
+        {version !== 'mini' && <p className="result-short-name">{shortName}</p>}
         <p className="result-description">{description}이에요.</p>
+        <p className="result-version-tag">{versionInfo.label} · {versionInfo.count}문항</p>
       </div>
 
-      <div className="result-section">
-        <h4 className="result-section__title">📊 나의 성향 점수</h4>
-        <ScoreChart scores={scores} />
-      </div>
+      {version !== 'mini' && (
+        <div className="result-section">
+          <h4 className="result-section__title">📊 나의 성향 점수</h4>
+          <ScoreChart scores={scores} maxScore={maxScorePerType} />
+        </div>
+      )}
 
       <div className="result-section">
-        <h4 className="result-section__title">💼 나에게 어울리는 직업</h4>
+        <h4 className="result-section__title">{jobsSectionTitle}</h4>
         <div className="job-cards">
-          {jobs.map((job) => (
+          {displayJobs.map((job) => (
             <div key={job} className="job-card">
               <span className="job-card__icon">🌟</span>
               <span className="job-card__name">{job}</span>
@@ -185,7 +201,7 @@ export default function ResultScreen({ result, resultData, onRestart }) {
       <div className="result-section hero-section">
         <h4 className="result-section__title">🏆 나의 추천 위인</h4>
         <div className="hero-card">
-          <div className="hero-card__name">{hero}</div>
+          <div className="hero-card__name">{heroTitle}</div>
           <p className="hero-card__desc">{heroDescription}</p>
           <p className="hero-card__message">💬 {message}</p>
         </div>
