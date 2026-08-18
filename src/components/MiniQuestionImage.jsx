@@ -17,7 +17,7 @@ export default function MiniQuestionImage({ questionId, src, alt = '' }) {
 
   const currentSrc = candidates[candidateIndex] || src
   const expectedFile = questionId
-    ? `${String(questionId).padStart(2, '0')}.jpg`
+    ? `${String(questionId).padStart(2, '0')}.jfif`
     : null
 
   useEffect(() => {
