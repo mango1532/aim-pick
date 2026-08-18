@@ -1,15 +1,38 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { getMiniImageCandidates } from '../data/miniImages'
 
-export default function MiniQuestionImage({ src, alt = '' }) {
-  const [hasError, setHasError] = useState(false)
+/**
+ * MINI 문항 일러스트 — public/images/mini/01.jpg ~ 12.jpg
+ * .jpg 로딩 실패 시 .jfif 자동 시도
+ */
+export default function MiniQuestionImage({ questionId, src, alt = '' }) {
+  const candidates = useMemo(() => {
+    if (questionId) return getMiniImageCandidates(questionId)
+    return src ? [src] : []
+  }, [questionId, src])
+
+  const [candidateIndex, setCandidateIndex] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hasError, setHasError] = useState(false)
+
+  const currentSrc = candidates[candidateIndex] || src
 
   useEffect(() => {
-    setHasError(false)
+    setCandidateIndex(0)
     setIsLoaded(false)
-  }, [src])
+    setHasError(false)
+  }, [questionId, src])
 
-  if (!src || hasError) {
+  const handleError = () => {
+    if (candidateIndex < candidates.length - 1) {
+      setCandidateIndex((prev) => prev + 1)
+      setIsLoaded(false)
+      return
+    }
+    setHasError(true)
+  }
+
+  if (!currentSrc || hasError) {
     return (
       <div className="mini-question-image mini-question-image--placeholder" aria-hidden="true">
         <span className="mini-question-image__placeholder-emoji">🎨</span>
@@ -24,12 +47,12 @@ export default function MiniQuestionImage({ src, alt = '' }) {
         <div className="mini-question-image__loading">그림 불러오는 중...</div>
       )}
       <img
-        key={src}
-        src={src}
+        key={currentSrc}
+        src={currentSrc}
         alt={alt}
         className={`mini-question-image__img ${isLoaded ? 'mini-question-image__img--loaded' : ''}`}
         onLoad={() => setIsLoaded(true)}
-        onError={() => setHasError(true)}
+        onError={handleError}
       />
     </div>
   )

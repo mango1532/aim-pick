@@ -116,7 +116,8 @@ export default function QuestionScreen({
         <ProgressBar current={currentIndex + 1} total={total} />
         <div className="mini-question-card" key={`mini-q-${currentQuestion.id}`}>
           <MiniQuestionImage
-            key={currentQuestion.image}
+            key={`mini-img-${currentQuestion.id}`}
+            questionId={currentQuestion.id}
             src={currentQuestion.image}
             alt={currentQuestion.situation || currentQuestion.text}
           />
