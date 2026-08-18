@@ -1,41 +1,52 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { cpSync, existsSync, mkdirSync, readdirSync } from 'node:fs'
+import { resolve } from 'node:path'
 
-/** public/images/mini/*.jfif — Vite가 Content-Type을 비워 두는 문제 보정 */
-function jfifMimePlugin() {
-  const fixJfifContentType = (req, res, next) => {
-    if (req.url && /\.jfif(?:\?|$)/i.test(req.url.split('?')[0])) {
-      const originalSetHeader = res.setHeader.bind(res)
-      res.setHeader = (name, value) => {
-        if (String(name).toLowerCase() === 'content-type' && !value) {
-          return originalSetHeader('Content-Type', 'image/jpeg')
-        }
-        return originalSetHeader(name, value)
+const MINI_SRC = resolve('src/assets/mini')
+const MINI_PUBLIC = resolve('public/images/mini')
+
+/** src/assets/mini/*.png → public/images/mini/ 자동 복사 */
+function syncMiniImagesPlugin() {
+  const sync = () => {
+    if (!existsSync(MINI_SRC)) return
+    mkdirSync(MINI_PUBLIC, { recursive: true })
+    for (const file of readdirSync(MINI_SRC)) {
+      if (/\.png$/i.test(file)) {
+        cpSync(resolve(MINI_SRC, file), resolve(MINI_PUBLIC, file))
       }
     }
-    next()
   }
 
   return {
-    name: 'jfif-mime',
+    name: 'sync-mini-images',
+    buildStart: sync,
     configureServer(server) {
-      server.middlewares.use(fixJfifContentType)
-    },
-    configurePreviewServer(server) {
-      server.middlewares.use(fixJfifContentType)
+      sync()
+      server.watcher.add(MINI_SRC)
+      server.watcher.on('change', (file) => {
+        if (file.replace(/\\/g, '/').includes('assets/mini') && /\.png$/i.test(file)) {
+          sync()
+        }
+      })
+      server.middlewares.use((req, res, next) => {
+        const url = req.url?.split('?')[0] ?? ''
+        if (url.includes('/mini/') && /\.png$/i.test(url)) {
+          res.setHeader('Cache-Control', 'no-store')
+        }
+        next()
+      })
     },
   }
 }
 
 export default defineConfig({
-  plugins: [react(), jfifMimePlugin()],
+  plugins: [react(), syncMiniImagesPlugin()],
   base: '/',
-  assetsInclude: ['**/*.jfif', '**/*.JFIF'],
   publicDir: 'public',
   server: {
     host: true,
     watch: {
-      // Windows에서 mp4 파일 잠금(EBUSY)으로 서버가 종료되는 것 방지
       ignored: ['**/public/videos/**'],
     },
   },

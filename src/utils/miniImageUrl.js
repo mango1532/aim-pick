@@ -1,49 +1,32 @@
 /**
- * MINI 문항 이미지 — 질문 id(1~12) ↔ 01.png~12.png 1:1 매핑
- * Vite 정적 import로 번들 URL을 확정합니다.
+ * MINI 문항 이미지 URL
+ *
+ * 정적 import 대신 런타임 경로 사용 → 파일 교체 후에도 캐시/번들 문제 없음
+ * vite.config.js의 sync-mini-images 플러그인이
+ * src/assets/mini/*.png → public/images/mini/*.png 자동 동기화
  */
-import img01 from '../assets/mini/01.png?url'
-import img02 from '../assets/mini/02.png?url'
-import img03 from '../assets/mini/03.png?url'
-import img04 from '../assets/mini/04.png?url'
-import img05 from '../assets/mini/05.png?url'
-import img06 from '../assets/mini/06.png?url'
-import img07 from '../assets/mini/07.png?url'
-import img08 from '../assets/mini/08.png?url'
-import img09 from '../assets/mini/09.png?url'
-import img10 from '../assets/mini/10.png?url'
-import img11 from '../assets/mini/11.png?url'
-import img12 from '../assets/mini/12.png?url'
 
-/** @type {Record<number, string>} */
-export const MINI_IMAGES = {
-  1: img01,
-  2: img02,
-  3: img03,
-  4: img04,
-  5: img05,
-  6: img06,
-  7: img07,
-  8: img08,
-  9: img09,
-  10: img10,
-  11: img11,
-  12: img12,
+function padNum(questionId) {
+  return String(Number(questionId)).padStart(2, '0')
 }
 
-/** 문항 id → png URL (없으면 null) */
+/** 문항 id → png URL (public 정적 경로 — dev/prod 공통) */
 export function getMiniImageUrl(questionId) {
-  const id = Number(questionId)
-  return MINI_IMAGES[id] ?? null
+  const num = padNum(questionId)
+  return `/images/mini/${num}.png`
+}
+
+/** 1순위: Vite dev 원본 경로 / 2순위: public */
+export function getMiniImageCandidates(questionId) {
+  const num = padNum(questionId)
+  const publicPath = `/images/mini/${num}.png`
+
+  if (import.meta.env.DEV) {
+    return [`/src/assets/mini/${num}.png`, publicPath]
+  }
+  return [publicPath]
 }
 
 export function getMiniImageExpectedFiles(questionId) {
-  const num = String(questionId).padStart(2, '0')
-  return [`${num}.png`]
-}
-
-if (import.meta.env.DEV) {
-  Object.entries(MINI_IMAGES).forEach(([id, url]) => {
-    console.debug(`[MINI] Q${id} → ${url}`)
-  })
+  return [`${padNum(questionId)}.png`]
 }

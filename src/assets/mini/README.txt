@@ -1,12 +1,14 @@
-MINI 문항 이미지 (src/assets/mini)
+MINI 문항 이미지
 
-  01.png ~ 12.png  (질문 1~12번과 1:1 매칭)
+★ 이 폴더에 png를 넣으세요: src/assets/mini/01.png ~ 12.png
 
-코드: src/utils/miniImageUrl.js 에서 정적 import로 연결됩니다.
+dev 서버 시작 시 자동으로 public/images/mini/ 에 복사됩니다.
+브라우저는 /images/mini/01.png 경로로 불러옵니다.
 
-이미지 교체 후 반드시:
+교체 후:
   1. npm run dev 재시작
-  2. 브라우저 Ctrl+Shift+R
-  (캐시가 남으면 node_modules/.vite 폴더 삭제 후 재시작)
+  2. Ctrl+Shift+R
 
-확인: http://localhost:5173/src/assets/mini/01.png
+확인:
+  http://localhost:5173/images/mini/01.png
+  http://localhost:5173/src/assets/mini/01.png

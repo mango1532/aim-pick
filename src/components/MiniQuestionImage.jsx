@@ -1,30 +1,39 @@
-import { useState } from 'react'
-import { getMiniImageUrl, getMiniImageExpectedFiles } from '../utils/miniImageUrl'
+import { useState, useEffect, useMemo } from 'react'
+import { getMiniImageCandidates, getMiniImageExpectedFiles } from '../utils/miniImageUrl'
 
 export default function MiniQuestionImage({ questionId, alt = '' }) {
-  const [hasError, setHasError] = useState(false)
-
   const id = Number(questionId)
-  const src = getMiniImageUrl(id)
+  const candidates = useMemo(
+    () => (id ? getMiniImageCandidates(id) : []),
+    [id],
+  )
+
+  const [index, setIndex] = useState(0)
+  const [failed, setFailed] = useState(false)
+
+  const src = candidates[index] ?? null
   const expectedFiles = id ? getMiniImageExpectedFiles(id) : []
 
+  useEffect(() => {
+    setIndex(0)
+    setFailed(false)
+  }, [id, candidates])
+
   const handleError = () => {
-    setHasError(true)
-    if (import.meta.env.DEV) {
-      console.warn('[MINI] 이미지 로딩 실패:', { questionId: id, src })
+    if (index < candidates.length - 1) {
+      setIndex((prev) => prev + 1)
+      return
     }
+    setFailed(true)
+    console.warn('[MINI] 이미지 로딩 실패:', { questionId: id, tried: candidates })
   }
 
-  if (!src || hasError) {
+  if (!src || failed) {
     return (
-      <div
-        className="mini-question-image mini-question-image--placeholder"
-        role="img"
-        aria-label={alt || '그림을 준비하고 있어요'}
-      >
+      <div className="mini-question-image mini-question-image--placeholder" role="img" aria-label={alt || '그림을 준비하고 있어요'}>
         <span className="mini-question-image__placeholder-emoji">🎨</span>
         <p className="mini-question-image__placeholder-text">그림을 준비하고 있어요!</p>
-        {expectedFiles.length > 0 && (
+        {expectedFiles[0] && (
           <p className="mini-question-image__placeholder-hint">
             src/assets/mini/{expectedFiles[0]}
           </p>
@@ -36,7 +45,7 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
   return (
     <div className="mini-question-image">
       <img
-        key={id}
+        key={`${id}-${src}`}
         src={src}
         alt={alt}
         className="mini-question-image__img object-cover rounded-2xl"
