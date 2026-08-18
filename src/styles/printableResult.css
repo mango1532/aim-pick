@@ -1,9 +1,7 @@
 /* ============================================
-   아이엠픽 A4 인쇄용 결과지 전용 스타일
-   웹 결과 화면과 동일한 파스텔 카드 디자인
+   아이엠픽 A4 인쇄용 결과지 — 2페이지 고정
    ============================================ */
 
-/* 화면에서는 숨김 — 인쇄 미리보기/인쇄 시에만 표시 */
 .print-only {
   display: none !important;
 }
@@ -13,160 +11,161 @@
   width: 100%;
   max-width: 210mm;
   margin: 0 auto;
-  padding: 0;
   font-family: 'Noto Sans KR', sans-serif;
   color: #333333;
-  background: linear-gradient(160deg, #fff7e8 0%, #f8fbff 45%, #eef6ff 100%);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
-.print-result__page {
-  padding: 0;
+/* ---- 페이지 컨테이너 ---- */
+.print-page {
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(160deg, #fff7e8 0%, #f8fbff 45%, #eef6ff 100%);
+}
+
+.print-page-1__body,
+.print-page-2__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* ---- 헤더 ---- */
 .print-header {
   text-align: center;
-  padding: 18px 22px 16px;
-  margin-bottom: 12px;
+  padding: 10px 14px 10px;
+  margin-bottom: 8px;
   background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
   border: 2px solid rgba(255, 138, 154, 0.28);
 }
 
 .print-header__logo {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.85rem;
+  font-size: 1.5rem;
   color: #ff8a9a;
-  margin: 0 0 4px;
-  letter-spacing: -0.02em;
+  margin: 0 0 2px;
 }
 
 .print-header__tagline {
-  margin: 0 0 12px;
-  font-size: 0.92rem;
+  margin: 0 0 8px;
+  font-size: 0.82rem;
   color: #666666;
 }
 
 .print-header__report-title {
   display: inline-block;
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.08rem;
+  font-size: 0.95rem;
   color: #ffffff;
   background: linear-gradient(135deg, #7db7ff, #8edbc5);
-  padding: 7px 20px;
+  padding: 5px 16px;
   border-radius: 999px;
   margin: 0;
-  box-shadow: 0 3px 10px rgba(125, 183, 255, 0.35);
 }
 
 .print-header__meta {
-  margin: 10px 0 0;
-  font-size: 0.72rem;
+  margin: 6px 0 0;
+  font-size: 0.68rem;
   color: #999999;
 }
 
 /* ---- 공통 카드 ---- */
 .print-card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: 16px 18px;
-  margin-bottom: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  break-inside: avoid;
-  page-break-inside: avoid;
+  border-radius: 18px;
+  padding: 10px 12px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
 
 .print-card__title {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.12rem;
+  font-size: 0.95rem;
   color: #333333;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 }
 
-/* ---- 진로유형 카드 (result-hero-card 스타일) ---- */
+/* ---- 진로유형 ---- */
 .print-type-card {
   text-align: center;
   background: linear-gradient(135deg, #fff0f2 0%, #e8f8f4 100%);
   border: 2px solid rgba(255, 138, 154, 0.22);
   position: relative;
   overflow: hidden;
-  padding: 20px 18px;
+  padding: 12px 10px;
 }
 
 .print-type-card::before {
   content: '';
   position: absolute;
-  top: -28px;
-  right: -28px;
-  width: 90px;
-  height: 90px;
+  top: -20px;
+  right: -20px;
+  width: 64px;
+  height: 64px;
   background: #ffd166;
-  opacity: 0.28;
+  opacity: 0.25;
   border-radius: 50%;
 }
 
 .print-type-card__badge {
   display: inline-block;
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.55rem;
+  font-size: 1.25rem;
   color: #ffffff;
   background: linear-gradient(135deg, #ff8a9a, #7db7ff);
-  padding: 8px 30px;
+  padding: 5px 22px;
   border-radius: 30px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 14px rgba(255, 138, 154, 0.35);
+  margin-bottom: 6px;
+  box-shadow: 0 3px 10px rgba(255, 138, 154, 0.3);
 }
 
 .print-type-card__name {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.28rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #333333;
-  margin: 0 0 8px;
+  margin: 0 0 4px;
 }
 
 .print-type-card__short {
   display: inline-block;
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: #7db7ff;
   background: rgba(125, 183, 255, 0.15);
-  border: 2px solid rgba(125, 183, 255, 0.38);
-  padding: 5px 18px;
+  border: 2px solid rgba(125, 183, 255, 0.35);
+  padding: 3px 12px;
   border-radius: 999px;
-  margin: 0 0 10px;
+  margin: 0 0 6px;
 }
 
 .print-type-card__desc {
-  font-size: 0.94rem;
+  font-size: 0.82rem;
   color: #666666;
   margin: 0;
-  line-height: 1.65;
+  line-height: 1.5;
 }
 
-/* ---- 트리맵 카드 ---- */
+/* ---- 트리맵 ---- */
 .print-treemap-card {
-  background: #ffffff;
   border: 2px solid rgba(142, 219, 197, 0.25);
+  padding: 8px 10px;
 }
 
 .print-treemap-card .career-treemap__title {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.12rem;
-  color: #333333;
-  margin: 0 0 8px;
+  font-size: 0.95rem;
+  margin: 0 0 4px;
   text-align: center;
 }
 
 .print-treemap-card .career-treemap__hint {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: #666666;
-  margin-top: 6px;
+  margin: 4px 0 0;
   text-align: center;
 }
 
@@ -174,290 +173,307 @@
   display: block;
   width: 100%;
   height: auto;
-  min-height: 170px;
-  max-height: 210px;
+  max-height: 130px;
 }
 
-.career-treemap--print .career-treemap__svg {
-  max-height: 210px;
+.print-rank-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
 }
 
-/* ---- 직업 카드 (job-card 스타일) ---- */
+.print-rank-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.print-rank-badge--first {
+  background: rgba(255, 209, 102, 0.35);
+  color: #9a6b1a;
+  border: 1px solid rgba(255, 179, 71, 0.5);
+}
+
+.print-rank-badge--second {
+  background: rgba(125, 183, 255, 0.2);
+  color: #2b5ea8;
+  border: 1px solid rgba(125, 183, 255, 0.4);
+}
+
+/* ---- 강점 ---- */
+.print-strength-card {
+  background: linear-gradient(135deg, #fff9e6, #ffffff);
+  border: 1px solid rgba(255, 209, 102, 0.35);
+  padding: 8px 12px;
+}
+
+.print-strength-card__text {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #555555;
+}
+
+/* ---- 직업 ---- */
 .print-jobs-card__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 6px;
 }
 
 .print-jobs-card__item {
   background: linear-gradient(135deg, #fff9e6, #fff0f2);
-  border-radius: 16px;
-  padding: 12px 10px;
+  border-radius: 12px;
+  padding: 8px 6px;
   text-align: center;
-  font-size: 0.86rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #333333;
-  border: 1px solid rgba(255, 209, 102, 0.45);
-  box-shadow: 0 2px 8px rgba(255, 209, 102, 0.15);
+  border: 1px solid rgba(255, 209, 102, 0.4);
 }
 
 .print-jobs-card__item-icon {
   display: block;
-  font-size: 1.25rem;
-  margin-bottom: 4px;
+  font-size: 1rem;
+  margin-bottom: 2px;
 }
 
-/* ---- 대표 위인 카드 ---- */
-.print-hero-main-card {
+/* ---- PAGE 1 대표 위인 (가로형·컴팩트) ---- */
+.print-page-1 .print-hero-main-card {
   background: linear-gradient(135deg, #e8f4ff 0%, #f0fff8 100%);
   border: 2px solid rgba(125, 183, 255, 0.28);
-}
-
-.hero-recommendation--print .hero-recommendation__featured {
-  margin: 0;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-card {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 18px 16px;
-  background: rgba(255, 255, 255, 0.82);
-  border-radius: 20px;
-  border: 2px solid rgba(142, 219, 197, 0.45);
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
-  gap: 10px;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-image {
-  width: 130px;
-  height: 130px;
-  border-radius: 22px;
-  border: 3px solid rgba(255, 138, 154, 0.5);
-  box-shadow: 0 6px 18px rgba(255, 138, 154, 0.28);
-  object-fit: cover;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-placeholder {
-  width: 130px;
-  height: 130px;
-  border-radius: 22px;
-  font-size: 2.8rem;
-  background: linear-gradient(135deg, #fff5f7, #e8f4ff);
-  border: 3px dashed rgba(255, 138, 154, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-name {
-  font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.45rem;
-  color: #333333;
-  margin: 4px 0 2px;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-tagline {
-  font-size: 0.9rem;
-  color: #7db7ff;
-  font-weight: 600;
-  margin: 0 0 8px;
-  line-height: 1.45;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-desc {
-  font-size: 0.86rem;
-  color: #666666;
-  margin: 0 0 8px;
-  line-height: 1.5;
-}
-
-.hero-recommendation--print .hero-recommendation__featured-achievement {
-  width: 100%;
-  background: rgba(125, 183, 255, 0.12);
-  border-radius: 14px;
-  padding: 10px 14px;
-  font-size: 0.88rem;
-  line-height: 1.55;
-  margin: 0;
-  text-align: center;
-}
-
-.hero-recommendation--print .hero-recommendation__achievement-label {
-  font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  display: block;
-  font-size: 0.82rem;
-  color: #ff8a9a;
-  margin-bottom: 4px;
-}
-
-/* ---- 추가 위인 그리드 (페이지 2) ---- */
-.print-hero-grid-card {
-  background: linear-gradient(180deg, #ffffff 0%, #fff9f5 100%);
-  border: 2px solid rgba(255, 138, 154, 0.18);
-}
-
-.print-hero-grid-card__hint {
-  text-align: center;
-  font-size: 0.84rem;
-  color: #666666;
-  margin: -4px 0 14px;
-  line-height: 1.5;
-}
-
-.hero-recommendation--print .hero-recommendation__intro {
-  text-align: center;
-  margin-bottom: 12px;
   padding: 10px 12px;
-  background: rgba(255, 138, 154, 0.08);
-  border-radius: 16px;
 }
 
-.hero-recommendation--print .hero-recommendation__field-label {
-  font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 0.92rem;
-  color: #7db7ff;
-  margin: 0;
-}
-
-.hero-recommendation--print .hero-recommendation__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.hero-recommendation--print .hero-recommendation__others {
-  margin-top: 0;
-}
-
-/* ---- 위인 카드 (인쇄용 3열) ---- */
-.hero-card-item--print {
-  flex-direction: column;
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-card {
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  padding: 12px 8px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  border: 2px solid rgba(142, 219, 197, 0.38);
+  text-align: left;
+  padding: 10px;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  min-height: 138px;
-  break-inside: avoid;
-  page-break-inside: avoid;
+  border: 2px solid rgba(142, 219, 197, 0.4);
 }
 
-.hero-card-item--print .hero-card-item__visual {
-  margin-bottom: 6px;
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-visual {
+  flex-shrink: 0;
 }
 
-.hero-card-item--print .hero-card-item__image {
-  width: 58px;
-  height: 58px;
-  border-radius: 14px;
-  border: 2px solid rgba(255, 138, 154, 0.35);
-  object-fit: cover;
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-image,
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
 }
 
-.hero-card-item--print .hero-card-item__placeholder {
-  width: 58px;
-  height: 58px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #fff0f2, #e8f4ff);
-  border: 2px dashed rgba(255, 138, 154, 0.35);
-  font-size: 1.5rem;
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-placeholder {
+  font-size: 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  background: linear-gradient(135deg, #fff5f7, #e8f4ff);
+  border: 2px dashed rgba(255, 138, 154, 0.4);
 }
 
-.hero-card-item--print .hero-card-item__name {
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-name {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 0.86rem;
-  color: #333333;
+  font-size: 1.05rem;
+  margin: 0 0 2px;
+}
+
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-tagline {
+  font-size: 0.75rem;
+  color: #7db7ff;
   margin: 0 0 4px;
+  line-height: 1.4;
 }
 
-.hero-card-item--print .hero-card-item__achievement {
-  font-size: 0.7rem;
-  color: #666666;
+.print-page-1 .hero-recommendation--print .hero-recommendation__featured-achievement {
+  background: rgba(125, 183, 255, 0.1);
+  border-radius: 10px;
+  padding: 6px 8px;
+  font-size: 0.74rem;
   line-height: 1.45;
+  margin: 0;
 }
 
-.hero-card-item--print .hero-card-item__achievement-label {
-  display: block;
+.print-page-1 .hero-recommendation--print .hero-recommendation__achievement-label {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 0.64rem;
-  font-weight: 700;
+  font-size: 0.68rem;
   color: #ff8a9a;
   margin-bottom: 2px;
 }
 
-/* ---- 응원 메시지 ---- */
+/* ---- PAGE 2 위인 그리드 (3×2) ---- */
+.print-hero-grid-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fff9f5 100%);
+  border: 2px solid rgba(255, 138, 154, 0.18);
+  padding: 10px 10px 8px;
+}
+
+.print-hero-grid-card__hint {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #666666;
+  margin: -2px 0 8px;
+}
+
+.print-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.hero-card-item--print {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 6px 4px;
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  border: 1.5px solid rgba(142, 219, 197, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  min-height: 0;
+}
+
+.hero-card-item--print .hero-card-item__image {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(255, 138, 154, 0.3);
+  object-fit: cover;
+}
+
+.hero-card-item--print .hero-card-item__placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #fff0f2, #e8f4ff);
+  border: 1.5px dashed rgba(255, 138, 154, 0.3);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4px;
+}
+
+.hero-card-item--print .hero-card-item__name {
+  font-family: 'Jua', 'Noto Sans KR', sans-serif;
+  font-size: 0.72rem;
+  margin: 0 0 2px;
+}
+
+.hero-card-item--print .hero-card-item__achievement {
+  font-size: 0.62rem;
+  color: #666666;
+  line-height: 1.35;
+}
+
+.hero-card-item--print .hero-card-item__achievement-label {
+  display: block;
+  font-size: 0.58rem;
+  color: #ff8a9a;
+  margin-bottom: 1px;
+}
+
+/* ---- PAGE 2 탐험 콘텐츠 ---- */
+.print-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+.print-chip {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.print-chip-list--keywords .print-chip {
+  background: rgba(201, 160, 255, 0.18);
+  color: #6b4f9e;
+  border: 1px solid rgba(201, 160, 255, 0.4);
+}
+
+.print-chip-list--activities .print-chip {
+  background: rgba(142, 219, 197, 0.2);
+  color: #2a6b52;
+  border: 1px solid rgba(142, 219, 197, 0.45);
+}
+
+.print-keywords-card,
+.print-activities-card,
+.print-tip-card {
+  padding: 8px 12px;
+}
+
+.print-tip-card {
+  background: linear-gradient(135deg, #eef6ff, #ffffff);
+  border: 1px solid rgba(125, 183, 255, 0.3);
+}
+
+.print-tip-card__text {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #444444;
+  text-align: center;
+}
+
 .print-message-card {
   text-align: center;
-  background: linear-gradient(135deg, #fff0f2, #ffe8f0);
-  border: 2px solid rgba(255, 138, 154, 0.32);
-  padding: 18px 16px;
+  background: linear-gradient(135deg, #fff0f2, #e8f8f4);
+  border: 2px solid rgba(255, 138, 154, 0.28);
+  padding: 10px 12px;
 }
 
 .print-message-card__text {
   font-family: 'Jua', 'Noto Sans KR', sans-serif;
-  font-size: 1.02rem;
+  font-size: 0.85rem;
   color: #ff6b7a;
-  line-height: 1.75;
+  line-height: 1.6;
   margin: 0;
 }
 
 /* ---- 푸터 ---- */
 .print-footer {
   text-align: center;
-  padding: 10px 0 2px;
-  margin-top: 6px;
-  border-top: 2px dashed rgba(255, 138, 154, 0.28);
+  padding: 6px 0 0;
+  margin-top: 4px;
+  border-top: 1.5px dashed rgba(255, 138, 154, 0.25);
 }
 
 .print-footer p {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   color: #999999;
-  line-height: 1.55;
+  line-height: 1.45;
 }
 
-/* ---- 페이지 나누기 ---- */
-.print-result__page--2 {
-  break-before: page;
-  page-break-before: always;
-  padding-top: 2px;
+.print-footer__brand {
+  font-size: 0.58rem !important;
+  color: #bbbbbb !important;
+  margin-bottom: 2px !important;
 }
 
-/* ---- MINI ---- */
+/* ---- MINI / KIDS ---- */
 .print-result--mini .print-type-card__name {
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
-.print-result--mini .hero-recommendation--print .hero-recommendation__featured-image,
-.print-result--mini .hero-recommendation--print .hero-recommendation__featured-placeholder {
-  width: 96px;
-  height: 96px;
-}
-
-.print-result--mini .hero-recommendation--print .hero-recommendation__grid {
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.print-result--mini .hero-card-item--print {
-  min-height: 112px;
-  padding: 8px 6px;
-}
-
-/* ---- KIDS ---- */
-.print-result--kids .hero-recommendation--print .hero-recommendation__grid {
+.print-result--mini .print-hero-grid {
   grid-template-columns: repeat(3, 1fr);
 }
 
 /* ============================================
-   @media print — 인쇄 전용 (visibility 방식 사용 안 함)
+   @media print — A4 2페이지 고정
    ============================================ */
 @media print {
   @page {
@@ -477,8 +493,6 @@
     background: #ffffff !important;
     margin: 0 !important;
     padding: 0 !important;
-    width: 100% !important;
-    height: auto !important;
   }
 
   #root,
@@ -491,11 +505,9 @@
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
-    box-shadow: none !important;
     overflow: visible !important;
   }
 
-  /* 화면용 UI 숨김 */
   .no-print,
   .screen-only,
   .demo-panel,
@@ -506,88 +518,86 @@
     display: none !important;
   }
 
-  /* 인쇄용 결과지 표시 */
-  .print-only {
+  .print-only,
+  .print-result {
     display: block !important;
   }
 
   .print-result {
-    display: block !important;
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     padding: 0 !important;
+  }
+
+  /* 페이지 고정 */
+  .print-page {
+    width: 100%;
+    min-height: 281mm;
+    max-height: 281mm;
+    height: 281mm;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
     background: linear-gradient(160deg, #fff7e8 0%, #f8fbff 45%, #eef6ff 100%) !important;
   }
 
-  .print-card,
-  .print-header {
-    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07) !important;
+  .print-page-1 {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .print-page-2 {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .print-page-2__body {
+    max-height: calc(281mm - 18mm);
+    overflow: hidden;
+  }
+
+  /* 카드별 avoid 제거 — 페이지 단위로만 분리 */
+  .print-card {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+    margin-bottom: 0 !important;
   }
 
   .print-type-card {
     background: linear-gradient(135deg, #fff0f2 0%, #e8f8f4 100%) !important;
   }
 
-  .print-hero-main-card {
+  .print-page-1 .print-hero-main-card {
     background: linear-gradient(135deg, #e8f4ff 0%, #f0fff8 100%) !important;
   }
 
+  .print-treemap-card .career-treemap__svg {
+    max-height: 120px;
+  }
+
+  .print-page-1 .hero-recommendation--print .hero-recommendation__featured-image,
+  .print-page-1 .hero-recommendation--print .hero-recommendation__featured-placeholder {
+    width: 68px;
+    height: 68px;
+  }
+
+  .hero-card-item--print {
+    background: linear-gradient(180deg, #ffffff, #f8fbff) !important;
+  }
+
   .print-message-card {
-    background: linear-gradient(135deg, #fff0f2, #ffe8f0) !important;
+    background: linear-gradient(135deg, #fff0f2, #e8f8f4) !important;
   }
 
   .print-jobs-card__item {
     background: linear-gradient(135deg, #fff9e6, #fff0f2) !important;
   }
+}
 
-  .hero-card-item--print {
-    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
-  }
-
-  .print-card,
-  .print-header,
-  .hero-card-item--print,
-  .hero-recommendation--print .hero-recommendation__featured-card,
-  .career-treemap__svg {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .print-result__page--2 {
-    break-before: page;
-    page-break-before: always;
-  }
-
-  .print-treemap-card .career-treemap__svg {
-    max-height: 165px;
-  }
-
-  .print-card {
-    margin-bottom: 8px !important;
-    padding: 12px 14px !important;
-  }
-
-  .print-header {
-    padding: 12px 16px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .hero-recommendation--print .hero-recommendation__featured-image {
-    width: 96px;
-    height: 96px;
-  }
-
-  .hero-recommendation--print .hero-recommendation__featured-placeholder {
-    width: 96px;
-    height: 96px;
-  }
-
-  .print-result__page--1 {
-    page-break-after: always;
-    break-after: page;
+@media screen {
+  .print-only {
+    display: none !important;
   }
 }
