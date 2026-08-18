@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getMiniImageCandidates, getMiniImageExpectedFiles } from '../data/miniImages'
+import { getMiniImageCandidates, getMiniImageExpectedFiles } from '../utils/miniImageUrl'
 
 export default function MiniQuestionImage({ questionId, alt = '' }) {
   const candidates = useMemo(
@@ -8,7 +8,6 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
   )
 
   const [candidateIndex, setCandidateIndex] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
 
   const currentSrc = candidates[candidateIndex] ?? null
@@ -16,14 +15,12 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
 
   useEffect(() => {
     setCandidateIndex(0)
-    setIsLoaded(false)
     setHasError(false)
   }, [questionId, candidates])
 
   const handleError = () => {
     if (candidateIndex < candidates.length - 1) {
       setCandidateIndex((prev) => prev + 1)
-      setIsLoaded(false)
       return
     }
     setHasError(true)
@@ -34,16 +31,18 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
 
   if (!currentSrc || hasError) {
     return (
-      <div className="mini-question-image mini-question-image--placeholder" aria-hidden="true">
+      <div
+        className="mini-question-image mini-question-image--placeholder"
+        role="img"
+        aria-label={alt || '그림을 준비하고 있어요'}
+      >
         <span className="mini-question-image__placeholder-emoji">🎨</span>
         <p className="mini-question-image__placeholder-text">그림을 준비하고 있어요!</p>
         {expectedFiles.length > 0 && (
           <p className="mini-question-image__placeholder-hint">
-            아래 폴더에 파일을 넣어 주세요:
+            src/assets/mini/{expectedFiles[0]}
             <br />
-            public/images/mini/{expectedFiles[0]}
-            <br />
-            또는 src/assets/mini/{expectedFiles[0]}
+            또는 {expectedFiles[1]}
           </p>
         )}
       </div>
@@ -52,15 +51,13 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
 
   return (
     <div className="mini-question-image">
-      {!isLoaded && (
-        <div className="mini-question-image__loading">그림 불러오는 중...</div>
-      )}
       <img
         key={currentSrc}
         src={currentSrc}
         alt={alt}
-        className={`mini-question-image__img ${isLoaded ? 'mini-question-image__img--loaded' : ''}`}
-        onLoad={() => setIsLoaded(true)}
+        className="mini-question-image__img object-cover rounded-2xl"
+        loading="eager"
+        decoding="async"
         onError={handleError}
       />
     </div>

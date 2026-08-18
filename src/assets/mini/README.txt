@@ -1,12 +1,9 @@
 MINI 문항 이미지 (src/assets/mini)
 
-이 폴더에 이미지를 넣으면 Vite가 자동으로 번들링하여
-가장 안 reliably 표시됩니다.
+Vite가 new URL(..., import.meta.url)로 번들링합니다.
 
-  01.jfif → 1번 문항
-  02.jfif → 2번 문항
-  ...
-  12.jfif → 12번 문항
+  01.png ~ 12.png   ← 기본 표시 (권장)
+  01.jfif ~ 12.jfif ← png 실패 시 fallback
 
-public/images/mini/ 에 넣어도 되지만,
-안 보이면 이 폴더(src/assets/mini/)에도 복사해 보세요.
+실제 이미지로 교체할 때 같은 파일명으로 덮어쓰세요.
+교체 후 npm run dev 재시작 + 브라우저 Ctrl+Shift+R

@@ -1,10 +1,8 @@
-import { getMiniImagePath } from './miniImages'
-
 /**
  * MINI 버전 12문항
  * - situation: 상황/질문 (화면 상단 핑크색)
  * - text: 추가 질문 (있을 때만 표시)
- * - image: public/images/mini/01.jpg ~ 12.jpg 자동 연결
+ * - 이미지: MiniQuestionImage 컴포넌트에서 Vite new URL 방식으로 로드
  */
 const MINI_QUESTIONS_RAW = [
   {
@@ -153,7 +151,4 @@ const MINI_QUESTIONS_RAW = [
   },
 ]
 
-export const questionsMini = MINI_QUESTIONS_RAW.map((q) => ({
-  ...q,
-  image: getMiniImagePath(q.id),
-}))
+export const questionsMini = MINI_QUESTIONS_RAW
