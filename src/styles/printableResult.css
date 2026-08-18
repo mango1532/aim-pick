@@ -173,7 +173,7 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 130px;
+  max-height: 150px;
 }
 
 .print-rank-badges {
@@ -574,7 +574,7 @@
   }
 
   .print-treemap-card .career-treemap__svg {
-    max-height: 120px;
+    max-height: 145px;
   }
 
   .print-page-1 .hero-recommendation--print .hero-recommendation__featured-image,
