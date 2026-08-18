@@ -3,7 +3,8 @@ import { TYPE_COLORS, TYPE_SHORT_LABELS, TYPE_ORDER } from '../data/typeColors'
 import { computeTreemapLayout } from '../utils/treemapLayout'
 
 const SVG_WIDTH = 520
-const SVG_HEIGHT = 220
+const SVG_HEIGHT_PRINT = 240
+const SVG_HEIGHT_SCREEN = 220
 const GAP = 3
 
 function getTreemapItems(scores) {
@@ -28,23 +29,27 @@ export default function CareerTreemap({
   scores,
   topTypes = [],
   version = 'teen',
+  variant = 'screen',
   title,
   hint,
   showScores = true,
 }) {
+  const isPrint = variant === 'print'
+  const svgHeight = isPrint ? SVG_HEIGHT_PRINT : SVG_HEIGHT_SCREEN
+
   const layout = useMemo(() => {
     const items = getTreemapItems(scores)
-    return computeTreemapLayout(items, GAP, GAP, SVG_WIDTH - GAP * 2, SVG_HEIGHT - GAP * 2)
-  }, [scores])
+    return computeTreemapLayout(items, GAP, GAP, SVG_WIDTH - GAP * 2, svgHeight - GAP * 2)
+  }, [scores, svgHeight])
 
   const [first, second] = topTypes
 
   return (
-    <div className="career-treemap">
+    <div className={`career-treemap${variant === 'print' ? ' career-treemap--print' : ''}`}>
       {title && <h4 className="career-treemap__title">{title}</h4>}
       <svg
         className="career-treemap__svg"
-        viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
+        viewBox={`0 0 ${SVG_WIDTH} ${svgHeight}`}
         role="img"
         aria-label="6가지 진로 성향 트리맵"
       >
@@ -55,8 +60,8 @@ export default function CareerTreemap({
           const isSecond = cell.key === second
           const w = cell.width - GAP
           const h = cell.height - GAP
-          const compact = w < 80 || h < 70
-          const tiny = w < 56 || h < 52
+          const compact = !isPrint && (w < 80 || h < 70)
+          const tiny = !isPrint && (w < 56 || h < 52)
           const fontSize = getFontSize(w, h, compact ? 2 : 3)
 
           return (
@@ -88,7 +93,7 @@ export default function CareerTreemap({
                   {!compact && (
                     <text
                       x={w / 2}
-                      y={h / 2 + 4}
+                      y={h / 2 + (isPrint ? 8 : 4)}
                       textAnchor="middle"
                       dominantBaseline="middle"
                       fill={colors.text}
@@ -98,10 +103,10 @@ export default function CareerTreemap({
                       {label}
                     </text>
                   )}
-                  {showScores && version !== 'mini' && h >= 58 && (
+                  {showScores && version !== 'mini' && h >= (isPrint ? 52 : 58) && (
                     <text
                       x={w / 2}
-                      y={h / 2 + (compact ? 10 : 22)}
+                      y={h / 2 + (compact ? 10 : isPrint ? 24 : 22)}
                       textAnchor="middle"
                       dominantBaseline="middle"
                       fill={colors.text}
