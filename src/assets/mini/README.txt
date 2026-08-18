@@ -1,12 +1,12 @@
 MINI 문항 이미지 (src/assets/mini)
 
-  01.png ~ 12.png  ← 이 이름으로 저장 (앞에 0 필수!)
+  01.png ~ 12.png  (질문 1~12번과 1:1 매칭)
 
-이 폴더에 png를 넣으면 Vite가 자동으로 연결합니다.
-public/images/mini/ 에 넣어도 됩니다 (2순위 fallback).
+코드: src/utils/miniImageUrl.js 에서 정적 import로 연결됩니다.
 
-교체 후:
-  1. npm run dev 재시작 (Ctrl+C → npm run dev)
+이미지 교체 후 반드시:
+  1. npm run dev 재시작
   2. 브라우저 Ctrl+Shift+R
+  (캐시가 남으면 node_modules/.vite 폴더 삭제 후 재시작)
 
 확인: http://localhost:5173/src/assets/mini/01.png

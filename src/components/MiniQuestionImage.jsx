@@ -1,35 +1,21 @@
-import { useState, useEffect, useMemo } from 'react'
-import { getMiniImageCandidates, getMiniImageExpectedFiles } from '../utils/miniImageUrl'
+import { useState } from 'react'
+import { getMiniImageUrl, getMiniImageExpectedFiles } from '../utils/miniImageUrl'
 
 export default function MiniQuestionImage({ questionId, alt = '' }) {
-  const candidates = useMemo(
-    () => (questionId ? getMiniImageCandidates(questionId) : []),
-    [questionId],
-  )
-
-  const [candidateIndex, setCandidateIndex] = useState(0)
   const [hasError, setHasError] = useState(false)
 
-  const currentSrc = candidates[candidateIndex] ?? null
-  const expectedFiles = questionId ? getMiniImageExpectedFiles(questionId) : []
-
-  useEffect(() => {
-    setCandidateIndex(0)
-    setHasError(false)
-  }, [questionId, candidates])
+  const id = Number(questionId)
+  const src = getMiniImageUrl(id)
+  const expectedFiles = id ? getMiniImageExpectedFiles(id) : []
 
   const handleError = () => {
-    if (candidateIndex < candidates.length - 1) {
-      setCandidateIndex((prev) => prev + 1)
-      return
-    }
     setHasError(true)
     if (import.meta.env.DEV) {
-      console.warn('[MINI] 이미지 로딩 실패:', { questionId, tried: candidates })
+      console.warn('[MINI] 이미지 로딩 실패:', { questionId: id, src })
     }
   }
 
-  if (!currentSrc || hasError) {
+  if (!src || hasError) {
     return (
       <div
         className="mini-question-image mini-question-image--placeholder"
@@ -41,8 +27,6 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
         {expectedFiles.length > 0 && (
           <p className="mini-question-image__placeholder-hint">
             src/assets/mini/{expectedFiles[0]}
-            <br />
-            또는 public/images/mini/{expectedFiles[0]}
           </p>
         )}
       </div>
@@ -52,8 +36,8 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
   return (
     <div className="mini-question-image">
       <img
-        key={currentSrc}
-        src={currentSrc}
+        key={id}
+        src={src}
         alt={alt}
         className="mini-question-image__img object-cover rounded-2xl"
         loading="eager"
