@@ -124,7 +124,9 @@ export default function QuestionScreen({
           {currentQuestion.situation && (
             <p className="mini-situation">{currentQuestion.situation}</p>
           )}
-          <p className="mini-question-text">{currentQuestion.text}</p>
+          {currentQuestion.text && (
+            <p className="mini-question-text">{currentQuestion.text}</p>
+          )}
         </div>
         <div
           className={`mini-choice-grid ${isAdvancing ? 'mini-choice-grid--locked' : ''}`}

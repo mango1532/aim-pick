@@ -3,7 +3,7 @@ import { getMiniImageCandidates } from '../data/miniImages'
 
 /**
  * MINI 문항 일러스트 — public/images/mini/01.jpg ~ 12.jpg
- * .jpg 로딩 실패 시 .jfif 자동 시도
+ * .jpg 실패 시 .jfif 자동 시도
  */
 export default function MiniQuestionImage({ questionId, src, alt = '' }) {
   const candidates = useMemo(() => {
@@ -16,6 +16,9 @@ export default function MiniQuestionImage({ questionId, src, alt = '' }) {
   const [hasError, setHasError] = useState(false)
 
   const currentSrc = candidates[candidateIndex] || src
+  const expectedFile = questionId
+    ? `${String(questionId).padStart(2, '0')}.jpg`
+    : null
 
   useEffect(() => {
     setCandidateIndex(0)
@@ -37,6 +40,11 @@ export default function MiniQuestionImage({ questionId, src, alt = '' }) {
       <div className="mini-question-image mini-question-image--placeholder" aria-hidden="true">
         <span className="mini-question-image__placeholder-emoji">🎨</span>
         <p className="mini-question-image__placeholder-text">그림을 준비하고 있어요!</p>
+        {expectedFile && (
+          <p className="mini-question-image__placeholder-hint">
+            public/images/mini/{expectedFile}
+          </p>
+        )}
       </div>
     )
   }
