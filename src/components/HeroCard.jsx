@@ -5,6 +5,7 @@ export default function HeroCard({
   hero,
   variant = 'compact',
   showField = false,
+  showAchievementLabel = false,
 }) {
   const [imageError, setImageError] = useState(false)
   const showImage = hero.image && hasKnownHeroImage(hero.name) && !imageError
@@ -30,7 +31,12 @@ export default function HeroCard({
         {showField && hero.field && (
           <p className="hero-card-item__field">{hero.field}</p>
         )}
-        <p className="hero-card-item__achievement">{hero.achievement}</p>
+        <p className="hero-card-item__achievement">
+          {showAchievementLabel && (
+            <span className="hero-card-item__achievement-label">대표 업적</span>
+          )}
+          {hero.achievement}
+        </p>
       </div>
     </article>
   )
