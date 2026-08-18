@@ -1,4 +1,4 @@
-import slideIcon from '../assets/mini/icons/slide.svg'
+import slideIcon from '../assets/mini/icons/slide.png'
 
 const ICONS = {
   slide: slideIcon,
