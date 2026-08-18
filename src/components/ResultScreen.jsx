@@ -143,7 +143,6 @@ export default function ResultScreen({ result, resultData, version = 'teen', onR
     version === 'mini' ? shortName
       : version === 'kids' ? `나의 진로 유형은 ${shortName}!`
         : name
-  const heroTitle = version === 'mini' ? `나와 닮은 위인은 ${hero}이에요!` : hero
   const jobsSectionTitle =
     version === 'mini' ? '🌟 나에게 어울리는 활동'
       : version === 'kids' ? '💼 나와 잘 어울리는 직업'
@@ -158,7 +157,7 @@ export default function ResultScreen({ result, resultData, version = 'teen', onR
   return (
     <div className={`screen result-screen result-screen--${version}`}>
       {/* 화면용 결과 (인쇄 시 숨김) */}
-      <div className="no-print result-screen__content">
+      <div className="no-print screen-only result-screen__content">
         <div className="result-celebration">
           <span className="confetti">🎉</span>
           <h2 className="result-celebration__title">{celebrationTitle}</h2>

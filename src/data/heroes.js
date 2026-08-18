@@ -102,12 +102,12 @@ export const HEROES = {
   },
   김홍도: {
     name: '김홍도',
-    achievement: '생동감 있는 풍속화를 그렸어요.',
+    achievement: '우리나라 사람들의 생활 모습을 생생하게 그렸어요.',
     verified: true,
   },
   신윤복: {
     name: '신윤복',
-    achievement: '일상을 아름답게 그린 화가예요.',
+    achievement: '조선시대 사람들의 모습과 풍속을 그림으로 남겼어요.',
     verified: true,
   },
   정선: {

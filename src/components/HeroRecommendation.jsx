@@ -21,87 +21,90 @@ export default function HeroRecommendation({
 
   const showFeatured = mode === 'all' || mode === 'featured'
   const showOthers = mode === 'all' || mode === 'others'
+  const isPrint = layout === 'print'
 
   const showFeaturedImage =
     featured.image && hasKnownHeroImage(featured.name) && !featuredImageError
 
   const fieldParts = field.split('·').map((part) => part.trim()).filter(Boolean)
-  const encouragement =
-    resultData?.message ||
-    `${featured.name}처럼 이 분야를 탐색해 볼 수 있어요.`
+  const gridColumns = isPrint
+    ? 3
+    : version === 'mini'
+      ? 3
+      : displayRemaining.length >= 6
+        ? 3
+        : 2
 
-  const isPrint = layout === 'print'
-  const showFieldHeader = version !== 'mini'
-  const showEncouragement = version !== 'mini'
-  const gridColumns =
-    version === 'mini' ? 3 : displayRemaining.length >= 6 ? 3 : 2
+  const cardVariant = isPrint ? 'print' : version === 'mini' ? 'mini' : 'compact'
+
+  const featuredTagline = featured.shortDescription
+    ? featured.shortDescription.replace(/예요\.?$/, '').trim()
+    : null
 
   return (
     <div className={`hero-recommendation hero-recommendation--${layout} hero-recommendation--${version}`}>
-      {showFieldHeader && showFeatured && (
+      {showOthers && isPrint && mode === 'others' && fieldParts.length > 0 && (
         <div className="hero-recommendation__intro">
           <p className="hero-recommendation__field-label">
-            {fieldParts.length > 0
-              ? fieldParts.map((part, i) => (
-                  <span key={part}>
-                    {i > 0 && ' · '}
-                    {part}
-                  </span>
-                ))
-              : field}
-          </p>
-          <p className="hero-recommendation__field-hint">
-            이 분야에서 활약한 위인들을 만나보세요!
+            {fieldParts.join(' · ')}
           </p>
         </div>
       )}
 
       {showFeatured && (
-      <section className="hero-recommendation__featured">
-        <h3 className="hero-recommendation__subtitle">
-          {version === 'mini' ? '⭐ 나와 닮은 위인' : '⭐ 나와 가장 닮은 위인'}
-        </h3>
-        <div className="hero-recommendation__featured-card">
-          <div className="hero-recommendation__featured-visual">
-            {showFeaturedImage ? (
-              <img
-                src={featured.image}
-                alt={featured.name}
-                className="hero-recommendation__featured-image"
-                onError={() => setFeaturedImageError(true)}
-              />
-            ) : (
-              <div className="hero-recommendation__featured-placeholder" aria-hidden="true">
-                <span>⭐</span>
-              </div>
-            )}
-          </div>
-          <div className="hero-recommendation__featured-text">
-            <p className="hero-recommendation__featured-name">{featured.name}</p>
-            {featured.shortDescription && version !== 'mini' && (
-              <p className="hero-recommendation__featured-desc">
-                &ldquo;{featured.shortDescription}&rdquo;
+        <section className="hero-recommendation__featured">
+          {!isPrint && (
+            <h3 className="hero-recommendation__subtitle">
+              {version === 'mini' ? '⭐ 나와 닮은 위인' : '⭐ 나와 가장 닮은 위인'}
+            </h3>
+          )}
+          <div className="hero-recommendation__featured-card">
+            <div className="hero-recommendation__featured-visual">
+              {showFeaturedImage ? (
+                <img
+                  src={featured.image}
+                  alt={featured.name}
+                  className="hero-recommendation__featured-image"
+                  onError={() => setFeaturedImageError(true)}
+                />
+              ) : (
+                <div className="hero-recommendation__featured-placeholder" aria-hidden="true">
+                  <span>⭐</span>
+                </div>
+              )}
+            </div>
+            <div className="hero-recommendation__featured-text">
+              <p className="hero-recommendation__featured-name">{featured.name}</p>
+              {isPrint && featuredTagline && version !== 'mini' && (
+                <p className="hero-recommendation__featured-tagline">{featuredTagline}</p>
+              )}
+              {!isPrint && featured.shortDescription && version !== 'mini' && (
+                <p className="hero-recommendation__featured-desc">
+                  {featured.shortDescription}
+                </p>
+              )}
+              {isPrint && !featuredTagline && featured.shortDescription && version !== 'mini' && (
+                <p className="hero-recommendation__featured-desc">
+                  {featured.shortDescription}
+                </p>
+              )}
+              <p className="hero-recommendation__featured-achievement">
+                <span className="hero-recommendation__achievement-label">대표 업적</span>
+                {featured.achievement}
               </p>
-            )}
-            <p className="hero-recommendation__featured-achievement">
-              <span className="hero-recommendation__achievement-label">대표 업적:</span>
-              {featured.achievement}
-            </p>
-            {showEncouragement && (
-              <p className="hero-recommendation__encouragement">
-                &ldquo;{encouragement}&rdquo;
-              </p>
-            )}
+              {!isPrint && version !== 'mini' && resultData?.message && (
+                <p className="hero-recommendation__encouragement">
+                  &ldquo;{resultData.message}&rdquo;
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {showOthers && displayRemaining.length > 0 && (
-        <section
-          className={`hero-recommendation__others${isPrint && version === 'teen' && mode === 'others' ? ' hero-recommendation__others--continued' : ''}`}
-        >
-          {mode !== 'others' && (
+        <section className="hero-recommendation__others">
+          {!isPrint && mode !== 'others' && (
             <h3 className="hero-recommendation__subtitle">
               {version === 'mini' ? '함께 만나볼 위인' : '함께 알아볼 위인'}
             </h3>
@@ -110,11 +113,12 @@ export default function HeroRecommendation({
             className="hero-recommendation__grid"
             style={{ '--hero-grid-cols': gridColumns }}
           >
-            {displayRemaining.map((hero) => (
+            {displayRemaining.map((heroItem) => (
               <HeroCard
-                key={hero.name}
-                hero={hero}
-                variant={version === 'mini' ? 'mini' : 'compact'}
+                key={heroItem.name}
+                hero={heroItem}
+                variant={cardVariant}
+                showAchievementLabel={isPrint}
               />
             ))}
           </div>

@@ -45,9 +45,16 @@ export default defineConfig({
   base: '/',
   publicDir: 'public',
   server: {
-    host: true,
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
     watch: {
       ignored: ['**/public/videos/**'],
     },
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 4173,
+    strictPort: true,
   },
 })
