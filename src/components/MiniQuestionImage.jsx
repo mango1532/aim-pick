@@ -1,30 +1,24 @@
 import { useState, useEffect, useMemo } from 'react'
-import { getMiniImageCandidates } from '../data/miniImages'
+import { getMiniImageCandidates, getMiniImageExpectedFiles } from '../data/miniImages'
 
-/**
- * MINI 문항 일러스트 — public/images/mini/01.jpg ~ 12.jpg
- * .jpg 실패 시 .jfif 자동 시도
- */
-export default function MiniQuestionImage({ questionId, src, alt = '' }) {
-  const candidates = useMemo(() => {
-    if (questionId) return getMiniImageCandidates(questionId)
-    return src ? [src] : []
-  }, [questionId, src])
+export default function MiniQuestionImage({ questionId, alt = '' }) {
+  const candidates = useMemo(
+    () => (questionId ? getMiniImageCandidates(questionId) : []),
+    [questionId],
+  )
 
   const [candidateIndex, setCandidateIndex] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
 
-  const currentSrc = candidates[candidateIndex] || src
-  const expectedFile = questionId
-    ? `${String(questionId).padStart(2, '0')}.jfif`
-    : null
+  const currentSrc = candidates[candidateIndex] ?? null
+  const expectedFiles = questionId ? getMiniImageExpectedFiles(questionId) : []
 
   useEffect(() => {
     setCandidateIndex(0)
     setIsLoaded(false)
     setHasError(false)
-  }, [questionId, src])
+  }, [questionId, candidates])
 
   const handleError = () => {
     if (candidateIndex < candidates.length - 1) {
@@ -33,6 +27,9 @@ export default function MiniQuestionImage({ questionId, src, alt = '' }) {
       return
     }
     setHasError(true)
+    if (import.meta.env.DEV) {
+      console.warn('[MINI] 이미지 로딩 실패:', { questionId, tried: candidates })
+    }
   }
 
   if (!currentSrc || hasError) {
@@ -40,9 +37,13 @@ export default function MiniQuestionImage({ questionId, src, alt = '' }) {
       <div className="mini-question-image mini-question-image--placeholder" aria-hidden="true">
         <span className="mini-question-image__placeholder-emoji">🎨</span>
         <p className="mini-question-image__placeholder-text">그림을 준비하고 있어요!</p>
-        {expectedFile && (
+        {expectedFiles.length > 0 && (
           <p className="mini-question-image__placeholder-hint">
-            public/images/mini/{expectedFile}
+            아래 폴더에 파일을 넣어 주세요:
+            <br />
+            public/images/mini/{expectedFiles[0]}
+            <br />
+            또는 src/assets/mini/{expectedFiles[0]}
           </p>
         )}
       </div>

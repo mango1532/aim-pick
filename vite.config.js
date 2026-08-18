@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  assetsInclude: ['**/*.jfif', '**/*.JFIF'],
+  publicDir: 'public',
   server: {
     host: true,
     watch: {

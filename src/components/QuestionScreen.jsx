@@ -118,7 +118,6 @@ export default function QuestionScreen({
           <MiniQuestionImage
             key={`mini-img-${currentQuestion.id}`}
             questionId={currentQuestion.id}
-            src={currentQuestion.image}
             alt={currentQuestion.situation || currentQuestion.text}
           />
           {currentQuestion.situation && (
