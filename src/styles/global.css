@@ -1201,6 +1201,249 @@ body {
   margin: 0;
 }
 
+/* ---- Hero Recommendation ---- */
+.hero-recommendation__intro {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.hero-recommendation__field-label {
+  margin: 0 0 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.hero-recommendation__field-hint {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+
+.hero-recommendation__subtitle {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  margin: 0 0 8px;
+  color: var(--pink);
+}
+
+.hero-recommendation__featured-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 10px;
+  background: rgba(255, 138, 154, 0.06);
+  border: 1px solid rgba(255, 138, 154, 0.2);
+  border-radius: 12px;
+}
+
+.hero-recommendation__featured-image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 138, 154, 0.35);
+  flex-shrink: 0;
+}
+
+.hero-recommendation__featured-placeholder {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff5f7, #ffe8ec);
+  border: 2px dashed rgba(255, 138, 154, 0.35);
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.hero-recommendation__featured-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.hero-recommendation__featured-desc {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+.hero-recommendation__featured-achievement {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.hero-recommendation__achievement-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue);
+  margin-bottom: 2px;
+}
+
+.hero-recommendation__encouragement {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--pink);
+  line-height: 1.5;
+}
+
+.hero-recommendation__others {
+  margin-top: 12px;
+}
+
+.hero-recommendation__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--hero-grid-cols, 2), 1fr);
+  gap: 8px;
+}
+
+.hero-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 6px;
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  background: #fafafa;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.hero-card-item--compact {
+  flex-direction: row;
+  text-align: left;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.hero-card-item--mini {
+  padding: 6px 4px;
+}
+
+.hero-card-item__visual {
+  flex-shrink: 0;
+}
+
+.hero-card-item__image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.hero-card-item--compact .hero-card-item__image {
+  width: 44px;
+  height: 44px;
+}
+
+.hero-card-item--mini .hero-card-item__image {
+  width: 40px;
+  height: 40px;
+}
+
+.hero-card-item__placeholder {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #f0f0f0;
+  font-size: 1.2rem;
+}
+
+.hero-card-item--compact .hero-card-item__placeholder,
+.hero-card-item--mini .hero-card-item__placeholder {
+  width: 44px;
+  height: 44px;
+  font-size: 1rem;
+}
+
+.hero-card-item__body {
+  min-width: 0;
+}
+
+.hero-card-item__name {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.hero-card-item__field {
+  margin: 0 0 2px;
+  font-size: 0.68rem;
+  color: var(--text-light);
+}
+
+.hero-card-item__achievement {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.hero-recommendation--mini .hero-recommendation__featured-image,
+.hero-recommendation--mini .hero-recommendation__featured-placeholder {
+  width: 72px;
+  height: 72px;
+}
+
+.hero-recommendation--mini .hero-recommendation__featured-name {
+  font-size: 1rem;
+}
+
+.hero-recommendation--mini .hero-recommendation__featured-achievement {
+  font-size: 0.78rem;
+}
+
+.printable-result__page--2 {
+  break-before: page;
+  page-break-before: always;
+}
+
+.printable-result--mini .hero-recommendation__featured-card {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.printable-result--mini .hero-recommendation__grid {
+  --hero-grid-cols: 3;
+}
+
+.hero-recommendation--screen {
+  margin-top: 4px;
+}
+
+.hero-recommendation--screen .hero-recommendation__featured-card {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.hero-recommendation--screen .hero-card-item {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 720px) {
+  .hero-recommendation__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-recommendation--mini .hero-recommendation__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 /* ---- 인쇄 스타일 ---- */
 .print-only {
   display: none;
@@ -1247,9 +1490,26 @@ body {
 
   .printable-result__section,
   .career-treemap,
-  .printable-result__hero-card {
+  .printable-result__hero-card,
+  .hero-recommendation__featured-card,
+  .hero-card-item {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  .printable-result__page--2 {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .hero-recommendation__featured-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero-recommendation__featured-placeholder {
+    width: 80px;
+    height: 80px;
   }
 
   .career-treemap__svg {

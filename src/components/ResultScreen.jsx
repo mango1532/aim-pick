@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import CuteButton from './CuteButton'
 import PrintableResult from './PrintableResult'
+import HeroRecommendation from './HeroRecommendation'
 import { BASE_TYPES, getVideoSrc } from '../data/resultTypes'
 import { MINI_JOB_LABELS, KIDS_JOB_COUNT, MINI_JOB_COUNT } from '../data/resultDisplay'
 import { VERSIONS } from '../data/versions'
@@ -127,7 +128,7 @@ export default function ResultScreen({ result, resultData, version = 'teen', onR
   }
 
   const { scores, resultCode, topTypes = [] } = result
-  const { name, shortName, description, jobs, hero, heroDescription, message } = resultData
+  const { name, shortName, description, jobs, hero } = resultData
 
   const versionInfo = VERSIONS[version] || VERSIONS.teen
   const maxScorePerType = version === 'mini' ? 10 : version === 'kids' ? 20 : 40
@@ -192,12 +193,14 @@ export default function ResultScreen({ result, resultData, version = 'teen', onR
         </div>
 
         <div className="result-section hero-section">
-          <h4 className="result-section__title">🏆 나의 추천 위인</h4>
-          <div className="hero-card">
-            <div className="hero-card__name">{heroTitle}</div>
-            <p className="hero-card__desc">{heroDescription}</p>
-            <p className="hero-card__message">💬 {message}</p>
-          </div>
+          <h4 className="result-section__title">🏆 추천 위인 탐험</h4>
+          <HeroRecommendation
+            resultCode={resultCode}
+            featuredHeroName={hero}
+            resultData={resultData}
+            version={version}
+            layout="screen"
+          />
         </div>
 
         <div className="result-section result-video-section">
