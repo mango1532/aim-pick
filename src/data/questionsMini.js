@@ -23,7 +23,7 @@ const MINI_QUESTIONS_RAW = [
     text: '나는 무엇을 하고 싶을까요?',
     imagePrompt: '귀여운 2D 동화풍. 어린이가 놀이터에서 활동적인 놀이를 하는 장면.',
     choices: [
-      { score: 5, emoji: '🛝', label: '미끄럼틀 타기' },
+      { score: 5, icon: 'slide', label: '미끄럼틀 타기' },
       { score: 2, emoji: '⚽', label: '공놀이 하기' },
       { score: 2, emoji: '🎨', label: '그림 그리기' },
       { score: 2, emoji: '📖', label: '책 읽기' },
