@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import CuteButton from './CuteButton'
+import PrintableResult from './PrintableResult'
+import HeroRecommendation from './HeroRecommendation'
 import { BASE_TYPES, getVideoSrc } from '../data/resultTypes'
 import { MINI_JOB_LABELS, KIDS_JOB_COUNT, MINI_JOB_COUNT } from '../data/resultDisplay'
 import { VERSIONS } from '../data/versions'
@@ -88,7 +90,7 @@ function ResultVideoCard({ videoSrc, resultCode, heroName }) {
   )
 }
 
-/** 6개 유형 점수 막대그래프 */
+/** 6개 유형 점수 막대그래프 (화면용) */
 function ScoreChart({ scores, maxScore = 40 }) {
   return (
     <div className="score-chart">
@@ -125,8 +127,8 @@ export default function ResultScreen({ result, resultData, version = 'teen', onR
     )
   }
 
-  const { scores, resultCode } = result
-  const { name, shortName, description, jobs, hero, heroDescription, message } = resultData
+  const { scores, resultCode, topTypes = [] } = result
+  const { name, shortName, description, jobs, hero } = resultData
 
   const versionInfo = VERSIONS[version] || VERSIONS.teen
   const maxScorePerType = version === 'mini' ? 10 : version === 'kids' ? 20 : 40
@@ -149,104 +151,82 @@ export default function ResultScreen({ result, resultData, version = 'teen', onR
 
   const videoSrc = getVideoSrc(resultData)
 
-  // 개발 중 영상 경로 확인용 로그
-  console.log('현재 결과 유형:', resultData.code)
-  console.log('재생 영상 경로:', videoSrc)
-
   const handlePrint = () => {
     window.print()
   }
 
   return (
     <div className={`screen result-screen result-screen--${version}`}>
-      {/* 인쇄용 전용 영역 */}
-      <div className="print-only print-header">
-        <h1>아이엠픽 (AI&apos;M PICK)</h1>
-        <p>데이터로 고르는 나의 미래</p>
-      </div>
+      {/* 화면용 결과 (인쇄 시 숨김) */}
+      <div className="no-print result-screen__content">
+        <div className="result-celebration">
+          <span className="confetti">🎉</span>
+          <h2 className="result-celebration__title">{celebrationTitle}</h2>
+          <span className="confetti">✨</span>
+        </div>
 
-      <div className="result-celebration">
-        <span className="confetti">🎉</span>
-        <h2 className="result-celebration__title">{celebrationTitle}</h2>
-        <span className="confetti">✨</span>
-      </div>
+        <div className="result-hero-card">
+          <div className="result-type-badge">{resultCode}</div>
+          <h3 className="result-type-name">{typeTitle}</h3>
+          {version !== 'mini' && <p className="result-short-name">{shortName}</p>}
+          <p className="result-description">{description}이에요.</p>
+          <p className="result-version-tag">{versionInfo.label} · {versionInfo.count}문항</p>
+        </div>
 
-      <div className="result-hero-card">
-        <div className="result-type-badge">{resultCode}</div>
-        <h3 className="result-type-name">{typeTitle}</h3>
-        {version !== 'mini' && <p className="result-short-name">{shortName}</p>}
-        <p className="result-description">{description}이에요.</p>
-        <p className="result-version-tag">{versionInfo.label} · {versionInfo.count}문항</p>
-      </div>
+        {version !== 'mini' && (
+          <div className="result-section">
+            <h4 className="result-section__title">📊 나의 성향 점수</h4>
+            <ScoreChart scores={scores} maxScore={maxScorePerType} />
+          </div>
+        )}
 
-      {version !== 'mini' && (
         <div className="result-section">
-          <h4 className="result-section__title">📊 나의 성향 점수</h4>
-          <ScoreChart scores={scores} maxScore={maxScorePerType} />
+          <h4 className="result-section__title">{jobsSectionTitle}</h4>
+          <div className="job-cards">
+            {displayJobs.map((job) => (
+              <div key={job} className="job-card">
+                <span className="job-card__icon">🌟</span>
+                <span className="job-card__name">{job}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
 
-      <div className="result-section">
-        <h4 className="result-section__title">{jobsSectionTitle}</h4>
-        <div className="job-cards">
-          {displayJobs.map((job) => (
-            <div key={job} className="job-card">
-              <span className="job-card__icon">🌟</span>
-              <span className="job-card__name">{job}</span>
-            </div>
-          ))}
+        <div className="result-section hero-section">
+          <h4 className="result-section__title">🏆 추천 위인 탐험</h4>
+          <HeroRecommendation
+            resultCode={resultCode}
+            featuredHeroName={hero}
+            resultData={resultData}
+            version={version}
+            layout="screen"
+          />
+        </div>
+
+        <div className="result-section result-video-section">
+          <ResultVideoCard
+            videoSrc={videoSrc}
+            resultCode={resultCode}
+            heroName={hero}
+          />
+        </div>
+
+        <div className="result-actions">
+          <CuteButton onClick={onRestart} variant="secondary">
+            🔄 처음으로 돌아가기
+          </CuteButton>
+          <CuteButton onClick={handlePrint} variant="primary">
+            🖨️ 결과지 인쇄하기
+          </CuteButton>
         </div>
       </div>
 
-      <div className="result-section hero-section">
-        <h4 className="result-section__title">🏆 나의 추천 위인</h4>
-        <div className="hero-card">
-          <div className="hero-card__name">{heroTitle}</div>
-          <p className="hero-card__desc">{heroDescription}</p>
-          <p className="hero-card__message">💬 {message}</p>
-        </div>
-      </div>
-
-      <div className="result-section result-video-section no-print">
-        <ResultVideoCard
-          videoSrc={videoSrc}
-          resultCode={resultCode}
-          heroName={hero}
-        />
-      </div>
-
-      <p className="print-video-notice print-only">
-        추천 위인 영상은 화면에서 확인해요!
-      </p>
-
-      {/* 인쇄용 상세 정보 */}
-      <div className="print-only print-details">
-        <h3>결과 상세</h3>
-        <p><strong>유형 코드:</strong> {resultCode}</p>
-        <p><strong>유형명:</strong> {name}</p>
-        <p><strong>짧은 이름:</strong> {shortName}</p>
-        <p><strong>설명:</strong> {description}</p>
-        <h4>6개 유형 점수</h4>
-        <ul>
-          {Object.entries(scores).map(([k, v]) => (
-            <li key={k}>{BASE_TYPES[k].label} ({k}): {v}점</li>
-          ))}
-        </ul>
-        <h4>추천 직업</h4>
-        <p>{jobs.join(', ')}</p>
-        <h4>추천 위인</h4>
-        <p>{hero} - {heroDescription}</p>
-        <p><strong>응원 메시지:</strong> {message}</p>
-      </div>
-
-      <div className="result-actions no-print">
-        <CuteButton onClick={onRestart} variant="secondary">
-          🔄 처음으로 돌아가기
-        </CuteButton>
-        <CuteButton onClick={handlePrint} variant="primary">
-          🖨️ 결과지 인쇄하기
-        </CuteButton>
-      </div>
+      {/* A4 인쇄용 결과지 */}
+      <PrintableResult
+        result={{ scores, resultCode, topTypes }}
+        resultData={resultData}
+        version={version}
+      />
     </div>
   )
 }

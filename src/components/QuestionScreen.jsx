@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import ProgressBar from './ProgressBar'
 import CuteButton from './CuteButton'
 import MiniQuestionImage from './MiniQuestionImage'
+import MiniChoiceIcon from './MiniChoiceIcon'
 
 const SCORE_OPTIONS = [
   { score: 1, emoji: '😐', label: '전혀 아니야' },
@@ -146,7 +147,7 @@ export default function QuestionScreen({
                 aria-label={opt.label}
               >
                 {isSelected && <span className="mini-choice-card__sparkle">⭐</span>}
-                <span className="mini-choice-card__emoji">{opt.emoji}</span>
+                <MiniChoiceIcon emoji={opt.emoji} icon={opt.icon} />
                 <span className="mini-choice-card__label">{opt.label}</span>
               </button>
             )
