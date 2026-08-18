@@ -42,7 +42,7 @@ export default function MiniQuestionImage({ questionId, alt = '' }) {
           <p className="mini-question-image__placeholder-hint">
             src/assets/mini/{expectedFiles[0]}
             <br />
-            또는 {expectedFiles[1]}
+            또는 public/images/mini/{expectedFiles[0]}
           </p>
         )}
       </div>

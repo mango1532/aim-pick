@@ -1,68 +1,37 @@
 /**
- * MINI 문항 이미지 URL (Vite new URL 정적 자산)
+ * MINI 문항 이미지 URL
  *
- * src/assets/mini/ 실제 파일 (2026-08 기준):
- *   01.png ~ 12.png
- *   01.jfif ~ 12.jfif
- *   (.jpg 없음)
+ * src/assets/mini/01.png ~ 12.png (확장자 .png만 사용)
+ * Vite import.meta.glob으로 폴더 내 png를 자동 연결합니다.
  */
 
-const MINI_IMAGE_CANDIDATES = {
-  1: [
-    new URL('../assets/mini/01.jfif', import.meta.url).href,
-    new URL('../assets/mini/01.png', import.meta.url).href,
-  ],
-  2: [
-    new URL('../assets/mini/02.jfif', import.meta.url).href,
-    new URL('../assets/mini/02.png', import.meta.url).href,
-  ],
-  3: [
-    new URL('../assets/mini/03.jfif', import.meta.url).href,
-    new URL('../assets/mini/03.png', import.meta.url).href,
-  ],
-  4: [
-    new URL('../assets/mini/04.jfif', import.meta.url).href,
-    new URL('../assets/mini/04.png', import.meta.url).href,
-  ],
-  5: [
-    new URL('../assets/mini/05.jfif', import.meta.url).href,
-    new URL('../assets/mini/05.png', import.meta.url).href,
-  ],
-  6: [
-    new URL('../assets/mini/06.jfif', import.meta.url).href,
-    new URL('../assets/mini/06.png', import.meta.url).href,
-  ],
-  7: [
-    new URL('../assets/mini/07.jfif', import.meta.url).href,
-    new URL('../assets/mini/07.png', import.meta.url).href,
-  ],
-  8: [
-    new URL('../assets/mini/08.jfif', import.meta.url).href,
-    new URL('../assets/mini/08.png', import.meta.url).href,
-  ],
-  9: [
-    new URL('../assets/mini/09.jfif', import.meta.url).href,
-    new URL('../assets/mini/09.png', import.meta.url).href,
-  ],
-  10: [
-    new URL('../assets/mini/10.jfif', import.meta.url).href,
-    new URL('../assets/mini/10.png', import.meta.url).href,
-  ],
-  11: [
-    new URL('../assets/mini/11.jfif', import.meta.url).href,
-    new URL('../assets/mini/11.png', import.meta.url).href,
-  ],
-  12: [
-    new URL('../assets/mini/12.jfif', import.meta.url).href,
-    new URL('../assets/mini/12.png', import.meta.url).href,
-  ],
+const bundledPngs = import.meta.glob('../assets/mini/*.png', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+})
+
+function getBundledPngUrl(questionId) {
+  const num = String(questionId).padStart(2, '0')
+  for (const [path, url] of Object.entries(bundledPngs)) {
+    if (path.endsWith(`/${num}.png`)) return url
+  }
+  return null
 }
 
+/** 문항 id별 png URL 후보 (번들 → public 순) */
 export function getMiniImageCandidates(questionId) {
-  return MINI_IMAGE_CANDIDATES[questionId] ?? []
+  const num = String(questionId).padStart(2, '0')
+  const bundled = getBundledPngUrl(questionId)
+  const publicPath = `/images/mini/${num}.png`
+
+  if (bundled) {
+    return bundled === publicPath ? [bundled] : [bundled, publicPath]
+  }
+  return [publicPath]
 }
 
 export function getMiniImageExpectedFiles(questionId) {
   const num = String(questionId).padStart(2, '0')
-  return [`${num}.png`, `${num}.jfif`]
+  return [`${num}.png`]
 }

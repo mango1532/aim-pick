@@ -1,9 +1,12 @@
 MINI 문항 이미지 (src/assets/mini)
 
-Vite가 new URL(..., import.meta.url)로 번들링합니다.
+  01.png ~ 12.png  ← 이 이름으로 저장 (앞에 0 필수!)
 
-  01.png ~ 12.png   ← 기본 표시 (권장)
-  01.jfif ~ 12.jfif ← png 실패 시 fallback
+이 폴더에 png를 넣으면 Vite가 자동으로 연결합니다.
+public/images/mini/ 에 넣어도 됩니다 (2순위 fallback).
 
-실제 이미지로 교체할 때 같은 파일명으로 덮어쓰세요.
-교체 후 npm run dev 재시작 + 브라우저 Ctrl+Shift+R
+교체 후:
+  1. npm run dev 재시작 (Ctrl+C → npm run dev)
+  2. 브라우저 Ctrl+Shift+R
+
+확인: http://localhost:5173/src/assets/mini/01.png
