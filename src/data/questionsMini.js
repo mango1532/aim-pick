@@ -1,5 +1,9 @@
-import { getMiniImageUrl } from './miniImages'
-
+/**
+ * MINI 버전 12문항
+ * - situation: 상황/질문 (화면 상단 핑크색)
+ * - text: 추가 질문 (있을 때만 표시)
+ * - 이미지: MiniQuestionImage 컴포넌트에서 Vite new URL 방식으로 로드
+ */
 const MINI_QUESTIONS_RAW = [
   {
     id: 1, type: 'M',
@@ -75,9 +79,9 @@ const MINI_QUESTIONS_RAW = [
   },
   {
     id: 7, type: 'A',
-    situation: '내가 멋진 이야기를 만들어볼까요?',
-    text: '나는 무엇을 하고 싶을까요?',
-    imagePrompt: '귀여운 2D 동화풍. 어린이가 상상의 세계를 그리는 장면.',
+    situation: '친구들과 함께 멋진 이야기를 만들어 볼까요?',
+    text: '',
+    imagePrompt: '귀여운 2D 동화풍. 어린이가 친구들과 함께 이야기를 만드는 장면.',
     choices: [
       { score: 5, emoji: '✏️', label: '이야기 그리기' },
       { score: 2, emoji: '📖', label: '책 읽기' },
@@ -87,9 +91,9 @@ const MINI_QUESTIONS_RAW = [
   },
   {
     id: 8, type: 'A',
-    situation: '색연필과 음악이 있어요.',
+    situation: '색연필과 스케치북 그리고 악기가 있어요.',
     text: '나는 무엇을 하고 싶을까요?',
-    imagePrompt: '귀여운 2D 동화풍. 어린이가 그림을 그리거나 음악을 연주하는 장면.',
+    imagePrompt: '귀여운 2D 동화풍. 어린이가 스케치북에 그림을 그리거나 악기를 연주하는 장면.',
     choices: [
       { score: 5, emoji: '🎨', label: '그림 그리기' },
       { score: 4, emoji: '🎵', label: '음악 연주하기' },
@@ -111,7 +115,7 @@ const MINI_QUESTIONS_RAW = [
   },
   {
     id: 10, type: 'H',
-    situation: '동생이 혼자 놀이하고 있어요.',
+    situation: '동생이 혼자 놀고 있어요.',
     text: '나는 어떻게 할까요?',
     imagePrompt: '귀여운 2D 동화풍. 어린이가 동생과 함께 놀아주는 장면.',
     choices: [
@@ -147,7 +151,4 @@ const MINI_QUESTIONS_RAW = [
   },
 ]
 
-export const questionsMini = MINI_QUESTIONS_RAW.map((q) => ({
-  ...q,
-  image: getMiniImageUrl(q.id),
-}))
+export const questionsMini = MINI_QUESTIONS_RAW

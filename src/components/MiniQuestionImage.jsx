@@ -1,35 +1,57 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { getMiniImageCandidates, getMiniImageExpectedFiles } from '../utils/miniImageUrl'
 
-export default function MiniQuestionImage({ src, alt = '' }) {
-  const [hasError, setHasError] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
+export default function MiniQuestionImage({ questionId, alt = '' }) {
+  const id = Number(questionId)
+  const candidates = useMemo(
+    () => (id ? getMiniImageCandidates(id) : []),
+    [id],
+  )
+
+  const [index, setIndex] = useState(0)
+  const [failed, setFailed] = useState(false)
+
+  const src = candidates[index] ?? null
+  const expectedFiles = id ? getMiniImageExpectedFiles(id) : []
 
   useEffect(() => {
-    setHasError(false)
-    setIsLoaded(false)
-  }, [src])
+    setIndex(0)
+    setFailed(false)
+  }, [id, candidates])
 
-  if (!src || hasError) {
+  const handleError = () => {
+    if (index < candidates.length - 1) {
+      setIndex((prev) => prev + 1)
+      return
+    }
+    setFailed(true)
+    console.warn('[MINI] 이미지 로딩 실패:', { questionId: id, tried: candidates })
+  }
+
+  if (!src || failed) {
     return (
-      <div className="mini-question-image mini-question-image--placeholder" aria-hidden="true">
+      <div className="mini-question-image mini-question-image--placeholder" role="img" aria-label={alt || '그림을 준비하고 있어요'}>
         <span className="mini-question-image__placeholder-emoji">🎨</span>
         <p className="mini-question-image__placeholder-text">그림을 준비하고 있어요!</p>
+        {expectedFiles[0] && (
+          <p className="mini-question-image__placeholder-hint">
+            src/assets/mini/{expectedFiles[0]}
+          </p>
+        )}
       </div>
     )
   }
 
   return (
     <div className="mini-question-image">
-      {!isLoaded && (
-        <div className="mini-question-image__loading">그림 불러오는 중...</div>
-      )}
       <img
-        key={src}
+        key={`${id}-${src}`}
         src={src}
         alt={alt}
-        className={`mini-question-image__img ${isLoaded ? 'mini-question-image__img--loaded' : ''}`}
-        onLoad={() => setIsLoaded(true)}
-        onError={() => setHasError(true)}
+        className="mini-question-image__img object-cover rounded-2xl"
+        loading="eager"
+        decoding="async"
+        onError={handleError}
       />
     </div>
   )
