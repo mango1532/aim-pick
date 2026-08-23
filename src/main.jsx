@@ -16,7 +16,12 @@ function Root() {
   if (quizOpen) {
     return (
       <BigDataQuiz
-        onExit={showBigDataQuiz ? undefined : () => setQuizOpen(false)}
+        onExit={() => {
+          if (showBigDataQuiz) {
+            window.history.replaceState({}, '', '/')
+          }
+          setQuizOpen(false)
+        }}
       />
     )
   }
