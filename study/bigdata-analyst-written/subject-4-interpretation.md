@@ -485,7 +485,7 @@ Bayesian search가 초기 몇 번의 나쁜 관측 뒤 좁은 영역만 탐색�
 ① 분류 임계값을 자동으로 0.5에 고정한다 ② 모델의 은닉층 수만 기록한다 ③ 데이터가 어디서 생성되어 어떤 변환·결합을 거쳐 결과 지표와 모델 입력이 되었는지 추적한다 ④ 원천 데이터의 오류를 자동으로 모두 제거한다
 
 ### 96. [난이도: 상]
-관측치 \(i\)의 오차를 \(e_i=y_i-\hat y_i\), 실제값 평균을 \(\bar y\)라 할 때 회귀 평가지표의 영문명·한글명·공식을 모두 올바르게 연결한 것은?
+모든 실제값 \(y_i\ne0\)이고, 관측치 \(i\)의 오차를 \(e_i=y_i-\hat y_i\), 실제값 평균을 \(\bar y\)라 할 때 회귀 평가지표의 영문명·한글명·공식을 모두 올바르게 연결한 것은?
 
 ① MSE(Mean Squared Error, 평균절대오차)=\(\frac1n\sum |e_i|\), MAE(Mean Absolute Error, 평균제곱오차)=\(\frac1n\sum e_i^2\) ② MAPE(Mean Absolute Percentage Error, 평균절대백분율오차)=\(\frac{100}{n}\sum e_i/y_i\), MPE(Mean Percentage Error, 평균백분율오차)=\(\frac{100}{n}\sum |e_i/y_i|\) ③ RMSE(Root Mean Squared Error, 평균제곱근오차)=\(\frac1n\sum\sqrt{|e_i|}\), \(R^2\)(결정계수)=\(\frac{\sum e_i^2}{\sum(y_i-\bar y)^2}\) ④ MSE(Mean Squared Error, 평균제곱오차)=\(\frac1n\sum e_i^2\), RMSE(Root Mean Squared Error, 평균제곱근오차)=\(\sqrt{\frac1n\sum e_i^2}\), MAE(Mean Absolute Error, 평균절대오차)=\(\frac1n\sum|e_i|\), MAPE(Mean Absolute Percentage Error, 평균절대백분율오차)=\(\frac{100}{n}\sum|e_i/y_i|\), MPE(Mean Percentage Error, 평균백분율오차)=\(\frac{100}{n}\sum e_i/y_i\), \(R^2\)(Coefficient of Determination, 결정계수)=\(1-\frac{\sum e_i^2}{\sum(y_i-\bar y)^2}\)
 
@@ -606,7 +606,7 @@ Bayesian search가 초기 몇 번의 나쁜 관측 뒤 좁은 영역만 탐색�
 93. **①** — AUC는 순위를, calibration은 예측확률과 실제 빈도의 일치를 평가하므로 서로 다르게 변할 수 있다.
 94. **②** — 랜덤 서브 샘플링은 반복 무작위 홀드아웃이라고도 하며 여러 분할의 결과를 평균한다. 관측치별 검증 횟수가 같지 않고 반복 결과가 서로 독립적이지 않을 수 있다는 점은 주의해야 한다.
 95. **③** — 데이터 리니지는 원천·변환·이동·결합·사용처의 계보를 추적해 오류 원인 분석, 감사, 영향도 분석과 재현성을 지원한다.
-96. **④** — MSE는 제곱오차 평균, RMSE는 그 제곱근, MAE는 절대오차 평균이다. MAPE는 절대백분율오차, MPE는 부호를 유지한 백분율오차의 평균이며, \(R^2=1-SSE/SST\)이다.
+96. **④** — MSE는 제곱오차 평균, RMSE는 그 제곱근, MAE는 절대오차 평균이다. MAPE는 절대백분율오차, MPE는 부호를 유지한 백분율오차의 평균이며, \(R^2=1-SSE/SST\)이다. MAPE와 MPE는 실제값이 0이면 정의되지 않는다는 점에 주의한다.
 97. **①** — 평행좌표는 고차원 관측치의 패턴을 한 화면에서 비교할 수 있지만 축 스케일·순서와 선 겹침에 따라 해석이 달라질 수 있다.
 98. **②** — 최종 모형은 예측 성능뿐 아니라 현업 절차에 적용할 수 있는지, 운영 시 입력 데이터를 안정적으로 확보할 수 있는지, 배포 후 유지비를 감당할 수 있는지를 함께 평가해야 한다.
 99. **③** — 오프라인 목적과 실제 가치의 불일치, 시스템 지연, 노출·행동 변화, 실험 오류를 함께 점검해야 한다.
