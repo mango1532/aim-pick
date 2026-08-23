@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   BIGDATA_QUESTIONS,
   BIGDATA_SUBJECTS,
@@ -56,6 +56,14 @@ export default function BigDataQuiz() {
   const currentQuestion = questionById.get(queue[currentIndex])
   const isAnswered = selectedOption !== null
   const isCorrect = isAnswered && selectedOption === currentQuestion?.answer
+
+  useEffect(() => {
+    const previousTitle = document.title
+    document.title = '빅데이터분석기사 최신 경향 400제'
+    return () => {
+      document.title = previousTitle
+    }
+  }, [])
 
   const updateWrongIds = (nextWrongIds) => {
     setWrongIds(nextWrongIds)
