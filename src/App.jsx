@@ -25,7 +25,7 @@ function createEmptySurveyState() {
   return { answers: [], result: null, errorMessage: '' }
 }
 
-export default function App() {
+export default function App({ onOpenBigDataQuiz }) {
   const [screen, setScreen] = useState(SCREENS.START)
   const [version, setVersion] = useState(null)
   const [answers, setAnswers] = useState([])
@@ -120,6 +120,7 @@ export default function App() {
           onSelectVersion={handleSelectVersion}
           onDemoRandom={handleDemoRandom}
           onDemoType={handleDemoType}
+          onOpenBigDataQuiz={onOpenBigDataQuiz}
         />
       )}
 

@@ -21,7 +21,12 @@ const heroImages = [
   { name: '황희', src: '/images/황희.png' },
 ]
 
-export default function StartScreen({ onSelectVersion, onDemoRandom, onDemoType }) {
+export default function StartScreen({
+  onSelectVersion,
+  onDemoRandom,
+  onDemoType,
+  onOpenBigDataQuiz,
+}) {
   return (
     <div className="screen start-screen start-screen--compact">
       <div className="start-screen__content">
@@ -62,6 +67,17 @@ export default function StartScreen({ onSelectVersion, onDemoRandom, onDemoType 
             </button>
           ))}
         </div>
+
+        {onOpenBigDataQuiz && (
+          <button type="button" className="bigdata-entry-card" onClick={onOpenBigDataQuiz}>
+            <span className="bigdata-entry-card__icon">📊</span>
+            <span>
+              <strong>빅데이터분석기사 최신 경향 400제</strong>
+              <small>과목별 문제 · 즉시 해설 · 오답 자동 저장</small>
+            </span>
+            <span className="bigdata-entry-card__arrow">시작 →</span>
+          </button>
+        )}
 
         <p className="creator-badge creator-badge--footer">
           {'호남지방데이터청 꿈길TEAM _ 김경보 & 장하림'}

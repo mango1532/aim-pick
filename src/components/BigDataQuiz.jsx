@@ -38,7 +38,7 @@ function shuffle(items) {
   return result
 }
 
-export default function BigDataQuiz() {
+export default function BigDataQuiz({ onExit }) {
   const [screen, setScreen] = useState('home')
   const [subjectId, setSubjectId] = useState(0)
   const [questionSet, setQuestionSet] = useState('1-20')
@@ -152,17 +152,30 @@ export default function BigDataQuiz() {
           </div>
 
           <div className="quiz-settings">
-            <label>
-              과목
-              <select value={subjectId} onChange={(event) => setSubjectId(Number(event.target.value))}>
-                <option value={0}>전 과목</option>
+            <fieldset className="quiz-subject-picker">
+              <legend>과목 선택</legend>
+              <div>
+                <button
+                  type="button"
+                  className={subjectId === 0 ? 'is-selected' : ''}
+                  onClick={() => setSubjectId(0)}
+                >
+                  전 과목
+                  <small>400문항</small>
+                </button>
                 {BIGDATA_SUBJECTS.map((subject) => (
-                  <option key={subject.id} value={subject.id}>
-                    {subject.id}과목 · {subject.name}
-                  </option>
+                  <button
+                    type="button"
+                    className={subjectId === subject.id ? 'is-selected' : ''}
+                    key={subject.id}
+                    onClick={() => setSubjectId(subject.id)}
+                  >
+                    {subject.id}과목
+                    <small>{subject.name} · 100문항</small>
+                  </button>
                 ))}
-              </select>
-            </label>
+              </div>
+            </fieldset>
             <label>
               문제 범위
               <select value={questionSet} onChange={(event) => setQuestionSet(event.target.value)}>
@@ -195,6 +208,11 @@ export default function BigDataQuiz() {
           {wrongIds.length > 0 && (
             <button type="button" className="quiz-text-btn" onClick={clearWrongAnswers}>
               오답 기록 초기화
+            </button>
+          )}
+          {onExit && (
+            <button type="button" className="quiz-back-link" onClick={onExit}>
+              ← 기존 첫 화면으로 돌아가기
             </button>
           )}
         </section>
